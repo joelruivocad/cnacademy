@@ -23,8 +23,24 @@ onAuthStateChanged(auth, async (user) => {
     // Salva o id globalmente ANTES de renderizar
     window._meuId = eu.id;
 
+    // Renderiza o perfil
     renderPerfil(eu);
+
+    // Busca o PDI
     const pdi = await getPDI(eu.id);
+
+    // Controla visibilidade do botao de formatura
+    const btnFormatura = document.getElementById('btnFormatura');
+    if (btnFormatura) {
+      const concluidas = pdi.filter(p => p.status === 'concluido').length;
+      if (concluidas < 12) {
+        btnFormatura.style.display = 'none';
+      } else {
+        btnFormatura.style.display = '';
+      }
+    }
+
+    // Renderiza progresso e timeline
     renderProgressoGeral(pdi);
     renderTimeline(pdi, eu);
 
