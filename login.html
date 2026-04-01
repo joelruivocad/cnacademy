@@ -29,10 +29,13 @@
   </div>
 </div>
 
-<script src="js/firebase.js"></script>
-<script src="js/auth.js"></script>
+<script type="module" src="js/firebase.js"></script>
+<script type="module" src="js/auth.js"></script>
 <script src="js/stars.js"></script>
-<script>
+<script type="module">
+import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { auth } from './js/firebase.js';
+
 async function doLogin(){
   const btn=document.getElementById('loginBtn');
   const err=document.getElementById('loginError');
@@ -42,12 +45,12 @@ async function doLogin(){
   btn.disabled=true;btn.textContent='Entrando...';err.textContent='';
   try{
     await signInWithEmailAndPassword(auth,email,pass);
-    // Redireciona baseado no perfil — o auth.js cuida disso
   } catch(e){
     err.textContent='Email ou senha incorretos.';
     btn.disabled=false;btn.textContent='Entrar no Programa';
   }
 }
+window.doLogin = doLogin;
 document.addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
 </script>
 </body>
