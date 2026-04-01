@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>CNAcademy — Dashboard</title>
+<link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+<div class="clouds"><div class="cl cl1"></div><div class="cl cl2"></div><div class="cl cl3"></div><div class="cl cl4"></div></div>
+<svg class="stars-svg" id="stars"></svg>
+
+<nav class="nav">
+  <div class="nav-left">
+    <span class="nav-icon">😇</span>
+    <div><div class="nav-title">CNAcademy</div><div class="nav-sub">Dashboard — Joel</div></div>
+  </div>
+  <div class="nav-right">
+    <a href="formatura.html" class="btn btn-sec btn-sm">Formatura</a>
+    <button class="btn btn-sec btn-sm" onclick="openAddAnalista()">+ Analista</button>
+    <button class="btn btn-err btn-sm" onclick="doLogout()">Sair</button>
+  </div>
+</nav>
+
+<main class="main">
+  <!-- KPIs -->
+  <div class="kpi-row" id="kpiRow"></div>
+
+  <!-- Analistas -->
+  <div class="section-label" style="margin-bottom:14px;">👼 Analistas</div>
+  <div class="analistas-grid" id="analistasGrid">
+    <div class="loading-msg">Carregando analistas...</div>
+  </div>
+</main>
+
+<!-- MODAL: ADICIONAR ANALISTA -->
+<div class="overlay" id="addAnalistaModal">
+  <div class="modal">
+    <div class="modal-hd">
+      <span class="modal-title">👼 Nova Analista</span>
+      <button class="modal-close" onclick="closeModal('addAnalistaModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">Nome completo</label><input type="text" class="form-input" id="an-nome" placeholder="Ex: Maria Silva"/></div>
+      <div class="form-group"><label class="form-label">Email corporativo</label><input type="email" class="form-input" id="an-email" placeholder="maria@cadastra.com"/></div>
+      <div class="form-group"><label class="form-label">Cargo</label><input type="text" class="form-input" id="an-cargo" placeholder="Ex: Especialista Midia"/></div>
+      <div class="form-group"><label class="form-label">Senha inicial</label><input type="password" class="form-input" id="an-senha" placeholder="Minimo 6 caracteres"/></div>
+      <div class="form-group"><label class="form-label">Data de inicio</label><input type="date" class="form-input" id="an-inicio"/></div>
+      <div class="form-group"><label class="form-label">Cor</label>
+        <div class="color-row" id="colorPicker"></div>
+      </div>
+    </div>
+    <div class="modal-ft">
+      <button class="btn btn-sec" onclick="closeModal('addAnalistaModal')">Cancelar</button>
+      <button class="btn btn-grad" id="addAnalistaBtn" onclick="createAnalista()">Criar Analista</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: NOTA E FEEDBACK -->
+<div class="overlay" id="feedbackModal">
+  <div class="modal">
+    <div class="modal-hd">
+      <span class="modal-title">✏️ Nota e Feedback</span>
+      <button class="modal-close" onclick="closeModal('feedbackModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">Analista</label><div id="fb-analista-nome" style="font:700 14px var(--fd);color:var(--gs900);padding:4px 0;"></div></div>
+      <div class="form-group"><label class="form-label">Semana</label><select class="form-input form-select" id="fb-semana"></select></div>
+      <div class="form-group"><label class="form-label">Status</label>
+        <select class="form-input form-select" id="fb-status">
+          <option value="a_fazer">A Fazer</option>
+          <option value="em_andamento">Em Andamento</option>
+          <option value="entregue">Entregue</option>
+          <option value="concluido">Concluido</option>
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">Nota (1 a 5)</label>
+        <div class="nota-stars" id="notaStars"></div>
+        <input type="hidden" id="fb-nota" value="0"/>
+      </div>
+      <div class="form-group"><label class="form-label">Pontos Fortes</label><textarea class="form-input form-ta" id="fb-fortes" placeholder="O que a analista fez bem nessa semana?"></textarea></div>
+      <div class="form-group"><label class="form-label">Pontos de Melhoria</label><textarea class="form-input form-ta" id="fb-melhoria" placeholder="O que pode melhorar?"></textarea></div>
+      <div class="form-group"><label class="form-label">Observacoes</label><textarea class="form-input form-ta" id="fb-obs" placeholder="Observacoes adicionais..."></textarea></div>
+    </div>
+    <div class="modal-ft">
+      <button class="btn btn-sec" onclick="closeModal('feedbackModal')">Cancelar</button>
+      <button class="btn btn-grad" id="saveFbBtn" onclick="saveFeedback()">Salvar Feedback</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: CONFIRMAR EXCLUSAO -->
+<div class="overlay" id="deleteModal">
+  <div class="modal" style="width:400px;">
+    <div class="modal-hd" style="background:var(--err-bg);">
+      <span class="modal-title" style="color:var(--err);">Remover Analista</span>
+      <button class="modal-close" onclick="closeModal('deleteModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:14px;color:var(--gs500);line-height:1.6;">Tem certeza que deseja remover <strong id="deleteAnalistaNome"></strong>? Todos os dados de PDI serao mantidos mas o acesso sera desativado.</p>
+    </div>
+    <div class="modal-ft">
+      <button class="btn btn-sec" onclick="closeModal('deleteModal')">Cancelar</button>
+      <button class="btn btn-err" id="confirmDeleteBtn" onclick="confirmDelete()">Remover</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/firebase.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/crud.js"></script>
+<script src="js/stars.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>
