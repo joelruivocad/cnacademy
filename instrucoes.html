@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>CNAcademy — Instrucoes do Programa</title>
+<link rel="stylesheet" href="css/style.css"/>
+<style>
+.instrucoes-hero{
+  background:linear-gradient(135deg,var(--purple-bg),var(--brand-light));
+  border-radius:var(--r24);padding:48px;margin-bottom:32px;
+  position:relative;overflow:hidden;
+}
+.instrucoes-hero::before{
+  content:'📚';position:absolute;right:40px;top:40px;
+  font-size:80px;opacity:.12;
+}
+.bloco{
+  background:rgba(255,255,255,.88);border:1px solid rgba(255,255,255,.95);
+  border-radius:var(--r20);padding:32px;box-shadow:var(--sh-md);
+  backdrop-filter:blur(10px);margin-bottom:20px;
+}
+.bloco-titulo{
+  font-family:var(--fd);font-size:18px;font-weight:700;
+  color:var(--gs900);margin-bottom:6px;
+  display:flex;align-items:center;gap:10px;
+}
+.bloco-sub{font-size:13px;color:var(--gs400);font-family:var(--fm);margin-bottom:18px;}
+.bloco-texto{font-size:14px;color:var(--gs500);line-height:1.75;}
+.bloco-texto strong{color:var(--gs900);font-weight:600;}
+.regra-item{
+  display:flex;align-items:flex-start;gap:14px;
+  padding:14px 0;border-bottom:1px solid var(--gs100);
+}
+.regra-item:last-child{border-bottom:none;}
+.regra-num{
+  width:32px;height:32px;border-radius:50%;
+  background:linear-gradient(135deg,var(--purple),var(--brand));
+  color:#fff;font:700 13px var(--fd);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.regra-content h4{font:700 14px var(--fd);color:var(--gs900);margin-bottom:3px;}
+.regra-content p{font-size:13px;color:var(--gs500);line-height:1.6;}
+.criterio-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:14px;margin-top:4px;
+}
+.criterio-card{
+  background:var(--gs50);border:1px solid var(--gs100);
+  border-radius:var(--r16);padding:16px;
+}
+.criterio-icon{font-size:24px;margin-bottom:8px;}
+.criterio-nome{font:700 13px var(--fd);color:var(--gs900);margin-bottom:4px;}
+.criterio-desc{font-size:12px;color:var(--gs500);line-height:1.55;}
+.modulo-bloco{
+  border-left:4px solid var(--purple);padding:16px 20px;
+  background:var(--gs50);border-radius:0 var(--r8) var(--r8) 0;margin-bottom:12px;
+}
+.modulo-bloco.m2{border-left-color:var(--brand);}
+.modulo-bloco.m3{border-left-color:var(--ok);}
+.modulo-bloco-titulo{font:700 14px var(--fd);color:var(--gs900);margin-bottom:6px;}
+.modulo-bloco-semanas{font:400 12px var(--fm);color:var(--gs400);margin-bottom:8px;}
+.modulo-bloco ul{list-style:none;padding:0;}
+.modulo-bloco ul li{
+  font-size:12px;color:var(--gs500);padding:3px 0;
+  display:flex;align-items:center;gap:6px;
+}
+.modulo-bloco ul li::before{content:'→';color:var(--purple);font-weight:700;flex-shrink:0;}
+.sheets-lista{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:10px;margin-top:4px;
+}
+.sheet-item{
+  display:flex;align-items:center;gap:10px;
+  background:var(--gs50);border:1px solid var(--gs100);
+  border-radius:var(--r8);padding:10px 12px;
+}
+.sheet-s{
+  width:28px;height:28px;border-radius:50%;
+  background:var(--purple-bg);color:var(--purple);
+  font:700 10px var(--fm);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.sheet-f{font:600 12px var(--fd);color:var(--gs900);}
+.alerta{
+  background:var(--warn-bg);border:1px solid var(--warn);
+  border-radius:var(--r8);padding:14px 16px;font-size:13px;
+  color:var(--warn);margin-top:16px;
+  display:flex;gap:10px;align-items:flex-start;line-height:1.6;
+}
+.ok-box{
+  background:var(--ok-bg);border:1px solid var(--ok);
+  border-radius:var(--r8);padding:14px 16px;font-size:13px;
+  color:var(--ok);margin-top:16px;
+  display:flex;gap:10px;align-items:flex-start;line-height:1.6;
+}
+.passo-item{
+  display:flex;align-items:flex-start;gap:14px;
+  padding:12px 0;border-bottom:1px solid var(--gs100);
+}
+.passo-item:last-child{border-bottom:none;}
+.passo-icon{
+  width:36px;height:36px;border-radius:var(--r8);
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;flex-shrink:0;background:var(--purple-bg);
+}
+.passo-content h4{font:700 13px var(--fd);color:var(--gs900);margin-bottom:3px;}
+.passo-content p{font-size:12px;color:var(--gs500);line-height:1.6;}
+</style>
+</head>
+<body>
+<div class="clouds">
+  <div class="cl cl1"></div><div class="cl cl2"></div>
+  <div class="cl cl3"></div><div class="cl cl4"></div>
+</div>
+<svg class="stars-svg" id="stars"></svg>
+
+<nav class="nav">
+  <div class="nav-left">
+    <span class="nav-icon">😇</span>
+    <div>
+      <div class="nav-title">CNAcademy</div>
+      <div class="nav-sub">Instrucoes do Programa</div>
+    </div>
+  </div>
+  <div class="nav-right">
+    <button class="btn btn-sec btn-sm" onclick="history.back()">Voltar</button>
+    <button class="btn btn-err btn-sm" onclick="doLogout()">Sair</button>
+  </div>
+</nav>
+
+<main class="main">
+
+  <!-- HERO -->
+  <div class="instrucoes-hero">
+    <div class="section-label" style="margin-bottom:12px;">📖 Guia Completo</div>
+    <h1 style="font-family:var(--fd);font-size:clamp(24px,4vw,36px);font-weight:700;
+      background:linear-gradient(135deg,#4A2DA8,#7C5CCC 40%,#FC4807 80%);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+      background-clip:text;margin-bottom:10px;line-height:1.2;">
+      Instrucoes do CNAcademy
+    </h1>
+    <p style="font-size:14px;color:var(--gs500);max-width:560px;line-height:1.65;margin-bottom:20px;">
+      Leia com atencao antes de comecar. Este guia explica como funciona o programa,
+      o que e esperado de voce em cada semana e como aproveitar ao maximo essa jornada.
+    </p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <div class="chip"><span>📅</span>12 Semanas</div>
+      <div class="chip"><span>🎯</span>3 Modulos</div>
+      <div class="chip"><span>👼</span>Metodologia PBL</div>
+      <div class="chip"><span>📊</span>Trilha Sheets</div>
+      <div class="chip"><span>🏆</span>Certificado ao Final</div>
+    </div>
+  </div>
+
+  <!-- O QUE E O PBL -->
+  <div class="bloco">
+    <div class="bloco-titulo">😇 O que e o CNAcademy?</div>
+    <div class="bloco-sub">Entenda a proposta antes de comecar</div>
+    <div class="bloco-texto">
+      O CNAcademy e um programa de desenvolvimento profissional baseado na metodologia
+      <strong>PBL — Project-Based Learning (Aprendizado Baseado em Projetos)</strong>.
+      <br/><br/>
+      A logica e simples: <strong>voce aprende fazendo</strong>. Em vez de assistir aulas ou
+      ler conteudos teoricos, voce recebe um desafio real — baseado em dados reais do CNA —
+      e precisa resolver, analisar e entregar uma resposta estruturada.
+      <br/><br/>
+      Por que isso funciona? <strong>Porque o aprendizado que fica e o que voce conquista.</strong>
+      Quando voce resolve um problema real, voce nao esquece a solucao — ela passa a
+      fazer parte do seu raciocinio para sempre.
+      <br/><br/>
+      No CNAcademy, o problema real e o CNA. Os dados sao do CNA. As campanhas sao do CNA.
+      O cliente e o CNA. <strong>Voce aprende enquanto entrega valor real.</strong>
+    </div>
+    <div class="ok-box">
+      <span style="font-size:18px;flex-shrink:0;">💡</span>
+      <span>
+        Nao existe resposta 100% errada no CNAcademy. O que avaliamos e
+        <strong>como voce pensa</strong>, nao se voce decorou um conceito.
+        Seja honesta — especialmente quando nao souber algo.
+        <strong>"Nao sei, mas minha hipotese e..."</strong>
+        vale muito mais do que uma resposta copiada.
+      </span>
+    </div>
+  </div>
+
+  <!-- ESTRUTURA -->
+  <div class="bloco">
+    <div class="bloco-titulo">🌤 Estrutura do Programa</div>
+    <div class="bloco-sub">12 semanas divididas em 3 modulos progressivos</div>
+
+    <div class="modulo-bloco">
+      <div class="modulo-bloco-titulo">Modulo 1 — Fundamentos de Midias Pagas</div>
+      <div class="modulo-bloco-semanas">Semanas 1 a 4</div>
+      <ul>
+        <li>Semana 1 — O Funil e os KPIs que Importam</li>
+        <li>Semana 2 — CPL, CPA e o que os Numeros Dizem</li>
+        <li>Semana 3 — Entendendo o Budget e o Pacing</li>
+        <li>Semana 4 — Leitura de Resultado e Narrativa</li>
+      </ul>
+    </div>
+
+    <div class="modulo-bloco m2">
+      <div class="modulo-bloco-titulo">Modulo 2 — Analise e Leitura de Dados</div>
+      <div class="modulo-bloco-semanas">Semanas 5 a 8</div>
+      <ul>
+        <li>Semana 5 — Comparacao de Periodos</li>
+        <li>Semana 6 — Analise por Segmento</li>
+        <li>Semana 7 — Identificando Anomalias</li>
+        <li>Semana 8 — Dashboard Pessoal de Acompanhamento</li>
+      </ul>
+    </div>
+
+    <div class="modulo-bloco m3">
+      <div class="modulo-bloco-titulo">Modulo 3 — Planejamento e Estrategia</div>
+      <div class="modulo-bloco-semanas">Semanas 9 a 12</div>
+      <ul>
+        <li>Semana 9 — Leitura de Brief e Traducao para Midia</li>
+        <li>Semana 10 — Distribuicao de Budget</li>
+        <li>Semana 11 — Cenarios de Performance</li>
+        <li>Semana 12 — Apresentacao para o Cliente</li>
+      </ul>
+    </div>
+
+    <div class="alerta">
+      <span style="font-size:18px;flex-shrink:0;">⚠️</span>
+      <span>
+        Cada modulo e progressivo — o Modulo 2 exige o conhecimento do Modulo 1,
+        e o Modulo 3 exige os dois anteriores. Nao pule etapas.
+      </span>
+    </div>
+  </div>
+
+  <!-- COMO FUNCIONA CADA SEMANA -->
+  <div class="bloco">
+    <div class="bloco-titulo">📅 Como Funciona Cada Semana</div>
+    <div class="bloco-sub">O ciclo semanal do CNAcademy</div>
+
+    <div class="passo-item">
+      <div class="passo-icon">📬</div>
+      <div class="passo-content">
+        <h4>Segunda-feira — Voce recebe o desafio</h4>
+        <p>O Joel libera o desafio da semana no seu painel. Leia com atencao o contexto,
+        os objetivos e o que e esperado na entrega antes de comecar.</p>
+      </div>
+    </div>
+
+    <div class="passo-item">
+      <div class="passo-icon">🔍</div>
+      <div class="passo-content">
+        <h4>Durante a semana — Voce resolve</h4>
+        <p>Use os dados reais das suas campanhas no CNA. Pesquise, analise, formule hipoteses
+        e construa sua resposta. Tente resolver sozinha primeiro — o esforco e onde o aprendizado acontece.</p>
+      </div>
+    </div>
+
+    <div class="passo-item">
+      <div class="passo-icon">📤</div>
+      <div class="passo-content">
+        <h4>Sexta-feira — Voce entrega</h4>
+        <p>Finalize sua entrega (Google Docs, Sheets ou Slides), copie o link e cole no campo
+        de entrega da semana correspondente no seu painel. Nao esqueca de atualizar o status para "Entregue".</p>
+      </div>
+    </div>
+
+    <div class="passo-item">
+      <div class="passo-icon">✍️</div>
+      <div class="passo-content">
+        <h4>Semana seguinte — Voce recebe o feedback</h4>
+        <p>O Joel acessa sua entrega, corrige e registra a nota (de 1 a 5), os pontos fortes
+        e os pontos de melhoria. Voce ve tudo isso na sua timeline de jornada.</p>
+      </div>
+    </div>
+
+    <div class="ok-box">
+      <span style="font-size:18px;flex-shrink:0;">✅</span>
+      <span>
+        <strong>Prazo de entrega: sempre 5 dias uteis</strong> a partir do recebimento do desafio.
+        Atrasos sem aviso previo serao registrados na avaliacao.
+      </span>
+    </div>
+  </div>
+
+  <!-- COMO ENTREGAR -->
+  <div class="bloco">
+    <div class="bloco-titulo">📤 Como Fazer a Entrega</div>
+    <div class="bloco-sub">Passo a passo para enviar cada desafio</div>
+
+    <div class="passo-item">
+      <div class="passo-icon" style="background:var(--ok-bg);">1️⃣</div>
+      <div class="passo-content">
+        <h4>Crie seu documento de entrega</h4>
+        <p>Abra o Google Docs, Sheets ou Slides conforme o formato pedido no desafio.
+        Certifique-se de que o arquivo esta no seu Google Drive pessoal ou da Cadastra.</p>
+      </div>
+    </div>
+
+    <div class="passo-item">
+      <div class="passo-icon" style="background:var(--ok-bg);">2️⃣</div>
+      <div class="passo-content">
+        <h4>Configure o compartilhamento</h4>
+        <p>Clique em "Compartilhar" no Google e configure para
+        <strong>"Qualquer pessoa com o link pode comentar"</strong>.
+        Isso garante que o Joel consiga acessar e dar feedback.</p>
+      </div>
+    </div>
+
+    <div class="passo-item">
+      <div class="passo-icon" style="background:var(--ok-bg);">3️⃣</div>
+      <div class="passo-content">
+        <h4>Copie o link</h4>
+        <p>Clique em "Copiar link" no painel de compartilhamento do Google.</p>
+      </div>
+    </div>
+
+    <div class="passo-item">
+      <div class="passo-icon" style="background:var(--ok-bg);">4️⃣</div>
+      <div class="passo-content">
+        <h4>Cole no sistema e clique em Enviar</h4>
+        <p>No seu painel do CNAcademy, encontre a semana correspondente,
+        cole o link no campo de entrega e clique em <strong>"Enviar"</strong>.</p>
+      </div>
+    </div>
+
+    <div class="passo-item" style="border-bottom:none;">
+      <div class="passo-icon" style="background:var(--ok-bg);">5️⃣</div>
+      <div class="passo-content">
+        <h4>Atualize o status</h4>
+        <p>Mude o status da semana para <strong>"Entregue"</strong> usando o seletor
+        no card da semana. O Joel recebe a notificacao automaticamente.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CRITERIOS DE AVALIACAO -->
+  <div class="bloco">
+    <div class="bloco-titulo">⭐ Criterios de Avaliacao</div>
+    <div class="bloco-sub">O que o Joel avalia em cada entrega</div>
+    <div class="criterio-grid">
+      <div class="criterio-card">
+        <div class="criterio-icon">🔍</div>
+        <div class="criterio-nome">Atencao aos Detalhes</div>
+        <div class="criterio-desc">
+          Os campos foram preenchidos completamente? Os numeros batem?
+          Os nomes das campanhas estao corretos? Pequenos detalhes fazem grande diferenca.
+        </div>
+      </div>
+      <div class="criterio-card">
+        <div class="criterio-icon">🧠</div>
+        <div class="criterio-nome">Raciocinio Logico</div>
+        <div class="criterio-desc">
+          Sua conclusao faz sentido com os dados apresentados?
+          Voce consegue conectar causa e efeito de forma coerente?
+        </div>
+      </div>
+      <div class="criterio-card">
+        <div class="criterio-icon">📊</div>
+        <div class="criterio-nome">Capacidade Analitica</div>
+        <div class="criterio-desc">
+          Voce foi alem do obvio? Sua analise e so descritiva
+          ("o CPL subiu") ou e interpretativa ("o CPL subiu porque...")?
+        </div>
+      </div>
+      <div class="criterio-card">
+        <div class="criterio-icon">💡</div>
+        <div class="criterio-nome">Iniciativa e Curiosidade</div>
+        <div class="criterio-desc">
+          Voce trouxe algo alem do que foi pedido? Fez uma pergunta extra,
+          levantou uma hipotese adicional ou pesquisou por conta propria?
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:20px;background:var(--purple-bg);border-radius:var(--r8);
+      padding:16px;font-size:13px;color:var(--purple);line-height:1.65;">
+      <strong>Escala de notas:</strong><br/>
+      ⭐ 1 — Entrega incompleta ou sem raciocinio claro<br/>
+      ⭐⭐ 2 — Entrega basica, so descritiva, sem analise<br/>
+      ⭐⭐⭐ 3 — Entrega completa com raciocinio adequado<br/>
+      ⭐⭐⭐⭐ 4 — Entrega solida com analise critica e hipoteses<br/>
+      ⭐⭐⭐⭐⭐ 5 — Entrega excelente com iniciativa, profundidade e clareza
+    </div>
+  </div>
+
+  <!-- TRILHA SHEETS -->
+  <div class="bloco">
+    <div class="bloco-titulo">📊 Trilha Google Sheets</div>
+    <div class="bloco-sub">Uma formula ou recurso novo por semana — sem tabela dinamica, tudo via QUERY</div>
+    <div class="sheets-lista">
+      <div class="sheet-item"><div class="sheet-s">S1</div><div class="sheet-f">SOMASES</div></div>
+      <div class="sheet-item"><div class="sheet-s">S2</div><div class="sheet-f">Variacao % + Formatacao Condicional</div></div>
+      <div class="sheet-item"><div class="sheet-s">S3</div><div class="sheet-f">CONT.SES</div></div>
+      <div class="sheet-item"><div class="sheet-s">S4</div><div class="sheet-f">SE + E + OU</div></div>
+      <div class="sheet-item"><div class="sheet-s">S5</div><div class="sheet-f">PROCV / PROCX</div></div>
+      <div class="sheet-item"><div class="sheet-s">S6</div><div class="sheet-f">QUERY basico</div></div>
+      <div class="sheet-item"><div class="sheet-s">S7</div><div class="sheet-f">QUERY intermediario</div></div>
+      <div class="sheet-item"><div class="sheet-s">S8</div><div class="sheet-f">QUERY avancado + IMPORTRANGE</div></div>
+      <div class="sheet-item"><div class="sheet-s">S9</div><div class="sheet-f">IFERROR + SEERRO</div></div>
+      <div class="sheet-item"><div class="sheet-s">S10</div><div class="sheet-f">Graficos Dinamicos</div></div>
+      <div class="sheet-item"><div class="sheet-s">S11</div><div class="sheet-f">Dashboard Completo</div></div>
+      <div class="sheet-item"><div class="sheet-s">S12</div><div class="sheet-f">Apresentacao Final</div></div>
+    </div>
+    <div class="alerta" style="margin-top:16px;">
+      <span style="font-size:18px;flex-shrink:0;">⚠️</span>
+      <span>
+        <strong>Importante:</strong> Nao utilizamos tabela dinamica neste programa.
+        Todas as analises de consolidacao e agrupamento devem ser feitas via
+        <strong>funcao QUERY</strong>.
+      </span>
+    </div>
+  </div>
+
+  <!-- REGRAS -->
+  <div class="bloco">
+    <div class="bloco-titulo">📋 Regras do Programa</div>
+    <div class="bloco-sub">5 regras simples que fazem toda a diferenca</div>
+
+    <div class="regra-item">
+      <div class="regra-num">1</div>
+      <div class="regra-content">
+        <h4>Entregue no prazo</h4>
+        <p>O prazo e de 5 dias uteis para cada desafio.
+        Se precisar de mais tempo, comunique ao Joel com antecedencia.
+        Atrasos sem aviso serao registrados na avaliacao.</p>
+      </div>
+    </div>
+
+    <div class="regra-item">
+      <div class="regra-num">2</div>
+      <div class="regra-content">
+        <h4>Seja honesta</h4>
+        <p>Se nao souber, diga. Uma resposta honesta com
+        "nao sei, mas minha hipotese e..." vale muito mais do que uma resposta copiada.
+        O CNAcademy avalia como voce pensa, nao o que voce decorou.</p>
+      </div>
+    </div>
+
+    <div class="regra-item">
+      <div class="regra-num">3</div>
+      <div class="regra-content">
+        <h4>Use os dados reais do CNA</h4>
+        <p>Sempre que possivel, use dados reais das campanhas que voce opera.
+        Isso torna o aprendizado 10x mais efetivo e a entrega muito mais rica.</p>
+      </div>
+    </div>
+
+    <div class="regra-item">
+      <div class="regra-num">4</div>
+      <div class="regra-content">
+        <h4>Tente resolver sozinha primeiro</h4>
+        <p>Voce pode e deve tirar duvidas com o Joel.
+        Mas tente resolver sozinha antes de pedir ajuda.
+        O esforco de tentar — mesmo errando — e onde o aprendizado acontece.</p>
+      </div>
+    </div>
+
+    <div class="regra-item">
+      <div class="regra-num">5</div>
+      <div class="regra-content">
+        <h4>Acompanhe as metas do CNA</h4>
+        <p>Parte do programa e voce entender e acompanhar as metas reais do projeto.
+        Sempre que possivel, relacione seus desafios com o contexto real do P2/26.
+        O numero importa — entender de onde ele vem importa mais.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- O QUE VOCE VAI GANHAR -->
+  <div class="bloco">
+    <div class="bloco-titulo">🏆 O que voce vai conquistar</div>
+    <div class="bloco-sub">Ao final das 12 semanas voce tera desenvolvido</div>
+    <div class="criterio-grid">
+      <div class="criterio-card">
+        <div class="criterio-icon">🧠</div>
+        <div class="criterio-nome">Raciocinio Analitico</div>
+        <div class="criterio-desc">Capacidade de interpretar dados e transformar numeros em decisoes.</div>
+      </div>
+      <div class="criterio-card">
+        <div class="criterio-icon">📊</div>
+        <div class="criterio-nome">Dominio de Sheets</div>
+        <div class="criterio-desc">QUERY, IMPORTRANGE, IFERROR e formulas essenciais para o dia a dia.</div>
+      </div>
+      <div class="criterio-card">
+        <div class="criterio-icon">🎯</div>
+        <div class="criterio-nome">Visao Estrategica</div>
+        <div class="criterio-desc">Capacidade de planejar budget, construir cenarios e pensar em funil.</div>
+      </div>
+      <div class="criterio-card">
+        <div class="criterio-icon">💬</div>
+        <div class="criterio-nome">Comunicacao Clara</div>
+        <div class="criterio-desc">Saber apresentar resultados de forma objetiva para o time e o cliente.</div>
+      </div>
+      <div class="criterio-card">
+        <div class="criterio-icon">🔍</div>
+        <div class="criterio-nome">Atencao aos Detalhes</div>
+        <div class="criterio-desc">Cuidado e precisao que fazem a diferenca em qualquer analise.</div>
+      </div>
+      <div class="criterio-card">
+        <div class="criterio-icon">🎓</div>
+        <div class="criterio-nome">Certificado CNAcademy</div>
+        <div class="criterio-desc">Certificado emitido pelo Joel ao final do programa com sua nota media.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DUVIDAS -->
+  <div class="bloco" style="text-align:center;padding:40px;">
+    <div style="font-size:48px;margin-bottom:12px;animation:float 3s ease-in-out infinite;display:inline-block;">😇</div>
+    <div style="font-family:var(--fd);font-size:20px;font-weight:700;color:var(--gs900);margin-bottom:8px;">
+      Duvidas? Fale com o Joel.
+    </div>
+    <p style="font-size:14px;color:var(--gs500);max-width:440px;margin:0 auto 20px;line-height:1.65;">
+      Se ficou alguma duvida sobre o programa, os desafios ou as entregas,
+      fale diretamente com o Joel na daily ou via WhatsApp.
+    </p>
+    <div style="font-size:12px;color:var(--gs400);font-family:var(--fm);">
+      CNAcademy · CNA Idiomas · Midia · Cadastra · 2026
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span class="footer-angel">🎓</span>
+  <div class="footer-title">CNAcademy</div>
+  <div class="footer-sub">Programa de Desenvolvimento PBL — Turma 2026</div>
+  <div class="footer-copy">Conduzido por Joel Rodrigues Ruivo · CNA Idiomas · Cadastra</div>
+</footer>
+
+<script src="js/stars.js"></script>
+<script type="module" src="js/auth.js"></script>
+</body>
+</html>
