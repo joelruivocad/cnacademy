@@ -6,119 +6,396 @@
 <title>CNAcademy — Certificado</title>
 <link rel="stylesheet" href="css/style.css"/>
 <style>
+  /* Reset da pagina de certificado */
+  .cert-page {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px 60px;
+    gap: 24px;
+  }
+
+  /* Card do certificado */
+  .cert-card {
+    background: var(--white);
+    border-radius: 24px;
+    padding: 56px 60px;
+    box-shadow: 0 20px 60px rgba(124,92,204,.22);
+    width: 100%;
+    max-width: 680px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid var(--purple-light);
+  }
+
+  /* Borda superior degradê */
+  .cert-top-bar {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 6px;
+    background: linear-gradient(
+      90deg,
+      var(--purple),
+      var(--brand),
+      var(--gold),
+      var(--brand),
+      var(--purple)
+    );
+  }
+
+  /* Borda interna decorativa */
+  .cert-inner-border {
+    position: absolute;
+    inset: 14px;
+    border: 1px solid rgba(124,92,204,.15);
+    border-radius: 18px;
+    pointer-events: none;
+  }
+
+  .cert-angel {
+    font-size: 52px;
+    display: block;
+    margin-bottom: 10px;
+    animation: float 4s ease-in-out infinite;
+  }
+
+  .cert-eyebrow {
+    font: 700 10px var(--fm);
+    color: var(--purple);
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    margin-bottom: 6px;
+  }
+
+  .cert-academy {
+    font-size: 13px;
+    color: var(--gs400);
+    margin-bottom: 28px;
+  }
+
+  .cert-certifica {
+    font-family: var(--fd);
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--gs700);
+    margin-bottom: 12px;
+  }
+
+  .cert-nome {
+    font-family: var(--fd);
+    font-size: clamp(28px, 5vw, 42px);
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--purple), var(--brand));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 20px;
+    line-height: 1.2;
+    word-break: break-word;
+  }
+
+  .cert-desc {
+    font-size: 13px;
+    color: var(--gs500);
+    line-height: 1.75;
+    max-width: 480px;
+    margin: 0 auto 28px;
+  }
+
+  .cert-datas {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+
+  .cert-data-item {
+    text-align: center;
+  }
+
+  .cert-data-label {
+    font: 700 10px var(--fm);
+    color: var(--gs400);
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    margin-bottom: 4px;
+    display: block;
+  }
+
+  .cert-data-val {
+    font: 700 15px var(--fd);
+    color: var(--gs900);
+  }
+
+  .cert-divider {
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--purple-light),
+      transparent
+    );
+    margin: 0 auto 24px;
+    width: 80%;
+  }
+
+  .cert-stars {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    margin-bottom: 24px;
+    font-size: 26px;
+  }
+
+  .cert-assinatura {
+    text-align: center;
+    margin-bottom: 4px;
+  }
+
+  .cert-assinatura-linha {
+    width: 200px;
+    height: 1px;
+    background: var(--gs200);
+    margin: 0 auto 8px;
+  }
+
+  .cert-assinatura-nome {
+    font: 700 14px var(--fd);
+    color: var(--gs900);
+    margin-bottom: 3px;
+  }
+
+  .cert-assinatura-cargo {
+    font-size: 11px;
+    color: var(--gs400);
+  }
+
+  .cert-id-text {
+    font: 400 10px var(--fm);
+    color: var(--gs100);
+    margin-top: 20px;
+    display: block;
+  }
+
+  /* Botoes de acao — FORA do card, abaixo dele */
+  .cert-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 680px;
+  }
+
+  /* Print */
   @media print {
-    .nav, .cert-actions, .clouds, .stars-svg { display:none!important; }
-    body { background:#fff!important; }
-    .cert-wrap { padding:0; }
-    .cert-card { box-shadow:none; border:2px solid #D4C5FF; }
+    .nav,
+    .cert-actions,
+    .clouds,
+    .stars-svg { display: none !important; }
+    body { background: #fff !important; }
+    .cert-page { padding: 0; justify-content: flex-start; }
+    .cert-card {
+      box-shadow: none;
+      border: 2px solid #D4C5FF;
+      max-width: 100%;
+      border-radius: 12px;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .cert-card { padding: 40px 24px; }
+    .cert-datas { gap: 20px; }
   }
 </style>
 </head>
 <body>
-<div class="clouds"><div class="cl cl1"></div><div class="cl cl2"></div></div>
+<div class="clouds">
+  <div class="cl cl1"></div>
+  <div class="cl cl2"></div>
+  <div class="cl cl3"></div>
+</div>
 <svg class="stars-svg" id="stars"></svg>
 
+<!-- NAV -->
 <nav class="nav">
   <div class="nav-left">
     <span class="nav-icon">😇</span>
-    <div><div class="nav-title">CNAcademy</div><div class="nav-sub">Certificado de Conclusao</div></div>
+    <div>
+      <div class="nav-title">CNAcademy</div>
+      <div class="nav-sub">Certificado de Conclusao</div>
+    </div>
   </div>
   <div class="nav-right">
-    <a href="javascript:history.back()" class="btn btn-sec btn-sm">Voltar</button>
-    <button class="btn btn-grad btn-sm" onclick="window.print()">Imprimir / Salvar PDF</button>
+    <button class="btn btn-sec btn-sm" onclick="history.back()">Voltar</button>
+    <button class="btn btn-grad btn-sm" onclick="window.print()">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="7 10 12 15 17 10"/>
+        <line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+      Imprimir / Salvar PDF
+    </button>
   </div>
 </nav>
 
-<div class="cert-wrap">
+<!-- CONTEUDO -->
+<div class="cert-page">
+
+  <!-- CARD DO CERTIFICADO -->
   <div class="cert-card" id="certCard">
-    <div class="cert-top-deco"></div>
-    <div class="cert-border"></div>
-    <div class="cert-angel">🎓</div>
-    <div class="cert-eyebrow">CNAcademy · Programa de Desenvolvimento PBL</div>
-    <div class="cert-academy">CNA Idiomas · Midia · Cadastra · 2026</div>
-    <div class="cert-title">Certificamos que</div>
-    <div class="cert-name" id="certNome">Carregando...</div>
+    <div class="cert-top-bar"></div>
+    <div class="cert-inner-border"></div>
+
+    <span class="cert-angel">🎓</span>
+
+    <div class="cert-eyebrow">
+      CNAcademy · Programa de Desenvolvimento PBL
+    </div>
+
+    <div class="cert-academy">
+      CNA Idiomas · Midia · Cadastra · 2026
+    </div>
+
+    <div class="cert-certifica">Certificamos que</div>
+
+    <div class="cert-nome" id="certNome">
+      <div class="spinner" style="margin:0 auto;"></div>
+    </div>
+
     <p class="cert-desc">
-      concluiu com excelencia o <strong>CNAcademy — Programa de Desenvolvimento PBL 2026</strong>,
-      programa de capacitacao em Midia de Performance conduzido pelo time CNA Idiomas da Cadastra,
-      abrangendo os modulos de Fundamentos de Midias Pagas, Analise e Leitura de Dados e
-      Planejamento e Estrategia, com trilha pratica de Google Sheets.
+      concluiu com excelencia o
+      <strong>CNAcademy — Programa de Desenvolvimento PBL 2026</strong>,
+      programa de capacitacao em Midia de Performance conduzido pelo time
+      CNA Idiomas da Cadastra, abrangendo os modulos de Fundamentos de
+      Midias Pagas, Analise e Leitura de Dados e Planejamento e Estrategia,
+      com trilha pratica de Google Sheets ao longo de 12 semanas.
     </p>
+
     <div class="cert-datas">
       <div class="cert-data-item">
-        <div class="cert-data-label">Inicio</div>
+        <span class="cert-data-label">Inicio</span>
         <div class="cert-data-val" id="certInicio">—</div>
       </div>
       <div class="cert-data-item">
-        <div class="cert-data-label">Termino</div>
+        <span class="cert-data-label">Termino</span>
         <div class="cert-data-val" id="certTermino">—</div>
       </div>
       <div class="cert-data-item">
-        <div class="cert-data-label">Nota Media</div>
+        <span class="cert-data-label">Nota Media</span>
         <div class="cert-data-val" id="certNota">—</div>
       </div>
     </div>
+
     <div class="cert-divider"></div>
+
     <div class="cert-stars" id="certStars"></div>
+
     <div class="cert-assinatura">
       <div class="cert-assinatura-linha"></div>
       <div class="cert-assinatura-nome">Joel Rodrigues Ruivo</div>
-      <div class="cert-assinatura-cargo">Lider de Midia · CNA Idiomas · Cadastra</div>
+      <div class="cert-assinatura-cargo">
+        Lider de Midia · CNA Idiomas · Cadastra
+      </div>
     </div>
-    <div class="cert-id" id="certId"></div>
+
+    <span class="cert-id-text" id="certId"></span>
   </div>
 
-  <div class="cert-actions" style="text-align:center;margin-top:20px;display:flex;gap:10px;justify-content:center;">
+  <!-- BOTOES — fora do card -->
+  <div class="cert-actions">
     <button class="btn btn-grad" onclick="window.print()">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="7 10 12 15 17 10"/>
+        <line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
       Salvar como PDF
     </button>
-    <a href="formatura.html" class="btn btn-sec">Voltar a Formatura</a>
+    <a href="formatura.html" class="btn btn-sec">
+      Voltar a Formatura
+    </a>
   </div>
+
 </div>
 
+<script src="js/stars.js"></script>
 <script type="module">
 import { getUsuarios, getPDI } from './js/crud.js';
 import { auth } from './js/firebase.js';
-import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import {
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
 onAuthStateChanged(auth, async (user) => {
-  if(!user){ window.location.href='login.html'; return; }
+  if (!user) { window.location.href = 'login.html'; return; }
+
   const params = new URLSearchParams(window.location.search);
   const id = params.get('id');
-  if(!id){ window.location.href='formatura.html'; return; }
-  const usuarios = await getUsuarios();
-  const u = usuarios.find(x=>x.id===id);
-  if(!u){ window.location.href='formatura.html'; return; }
-  const pdi = await getPDI(id);
-  const notas = pdi.filter(p=>p.nota>0).map(p=>p.nota);
-  const media = notas.length ? (notas.reduce((a,b)=>a+b,0)/notas.length).toFixed(1) : '—';
-  const mediaNum = parseFloat(media)||0;
+  if (!id) { window.location.href = 'formatura.html'; return; }
 
-  document.getElementById('certNome').textContent    = u.nome || '—';
-  document.getElementById('certInicio').textContent  = fmtDate(u.dataInicio);
-  document.getElementById('certTermino').textContent = fmtDate(u.dataTermino || new Date().toISOString().split('T')[0]);
-  document.getElementById('certNota').textContent    = media !== '—' ? `${media} / 5.0` : '—';
-  document.getElementById('certId').textContent      = `ID: CNAcademy-2026-${id.substring(0,8).toUpperCase()}`;
+  try {
+    const usuarios = await getUsuarios();
+    const u = usuarios.find(x => x.id === id);
+    if (!u) { window.location.href = 'formatura.html'; return; }
 
-  // Stars
-  const starsWrap = document.getElementById('certStars');
-  for(let i=1;i<=5;i++){
-    const s = document.createElement('span');
-    s.style.fontSize='28px';
-    s.textContent = i <= Math.round(mediaNum) ? '⭐' : '☆';
-    starsWrap.appendChild(s);
+    const pdi  = await getPDI(id);
+    const notas = pdi.filter(p => p.nota > 0).map(p => p.nota);
+    const media = notas.length
+      ? (notas.reduce((a, b) => a + b, 0) / notas.length).toFixed(1)
+      : null;
+    const mediaNum = parseFloat(media) || 0;
+
+    // Preenche os campos
+    document.getElementById('certNome').textContent = u.nome || '—';
+    document.getElementById('certInicio').textContent  = fmtDate(u.dataInicio);
+    document.getElementById('certTermino').textContent = fmtDate(
+      u.dataTermino || new Date().toISOString().split('T')[0]
+    );
+    document.getElementById('certNota').textContent = media
+      ? `${media} / 5.0`
+      : '—';
+    document.getElementById('certId').textContent =
+      `ID: CNAcademy-2026-${id.substring(0, 8).toUpperCase()}`;
+
+    // Estrelas
+    const starsWrap = document.getElementById('certStars');
+    starsWrap.innerHTML = '';
+    for (let i = 1; i <= 5; i++) {
+      const s = document.createElement('span');
+      s.textContent = i <= Math.round(mediaNum) ? '⭐' : '☆';
+      starsWrap.appendChild(s);
+    }
+
+    // Titulo da pagina
+    document.title = `Certificado — ${u.nome} · CNAcademy 2026`;
+
+  } catch (e) {
+    console.error('Erro ao carregar certificado:', e);
+    document.getElementById('certNome').textContent = 'Erro ao carregar';
   }
 });
 
-function fmtDate(s){
-  if(!s) return '—';
+function fmtDate(s) {
+  if (!s) return '—';
   try {
-    const d = new Date(s);
-    return d.toLocaleDateString('pt-BR', { day:'2-digit', month:'long', year:'numeric' });
+    return new Date(s + 'T12:00:00').toLocaleDateString('pt-BR', {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric'
+    });
   } catch { return s; }
 }
 </script>
-<script src="js/stars.js"></script>
 </body>
 </html>
