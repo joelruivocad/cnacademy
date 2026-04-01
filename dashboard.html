@@ -65,9 +65,33 @@
       <button class="modal-close" onclick="closeModal('feedbackModal')">✕</button>
     </div>
     <div class="modal-body">
-      <div class="form-group"><label class="form-label">Analista</label><div id="fb-analista-nome" style="font:700 14px var(--fd);color:var(--gs900);padding:4px 0;"></div></div>
-      <div class="form-group"><label class="form-label">Semana</label><select class="form-input form-select" id="fb-semana"></select></div>
-      <div class="form-group"><label class="form-label">Status</label>
+
+      <div class="form-group">
+        <label class="form-label">Analista</label>
+        <div id="fb-analista-nome"
+          style="font:700 14px var(--fd);color:var(--gs900);padding:4px 0;">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Semana</label>
+        <select class="form-input form-select" id="fb-semana"></select>
+      </div>
+
+      <!-- ESTE ELEMENTO E OBRIGATORIO -->
+      <div class="form-group">
+        <label class="form-label">Entrega da Analista</label>
+        <div id="fb-link-entrega">
+          <div style="background:var(--gs50);border:1px solid var(--gs100);
+            border-radius:var(--r8);padding:10px 12px;
+            font-size:12px;color:var(--gs400);">
+            Nenhuma entrega enviada ainda.
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Status</label>
         <select class="form-input form-select" id="fb-status">
           <option value="a_fazer">A Fazer</option>
           <option value="em_andamento">Em Andamento</option>
@@ -75,17 +99,39 @@
           <option value="concluido">Concluido</option>
         </select>
       </div>
-      <div class="form-group"><label class="form-label">Nota (1 a 5)</label>
+
+      <div class="form-group">
+        <label class="form-label">Nota (1 a 5)</label>
         <div class="nota-stars" id="notaStars"></div>
         <input type="hidden" id="fb-nota" value="0"/>
       </div>
-      <div class="form-group"><label class="form-label">Pontos Fortes</label><textarea class="form-input form-ta" id="fb-fortes" placeholder="O que a analista fez bem nessa semana?"></textarea></div>
-      <div class="form-group"><label class="form-label">Pontos de Melhoria</label><textarea class="form-input form-ta" id="fb-melhoria" placeholder="O que pode melhorar?"></textarea></div>
-      <div class="form-group"><label class="form-label">Observacoes</label><textarea class="form-input form-ta" id="fb-obs" placeholder="Observacoes adicionais..."></textarea></div>
+
+      <div class="form-group">
+        <label class="form-label">Pontos Fortes</label>
+        <textarea class="form-input form-ta" id="fb-fortes"
+          placeholder="O que a analista fez bem nessa semana?"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Pontos de Melhoria</label>
+        <textarea class="form-input form-ta" id="fb-melhoria"
+          placeholder="O que pode melhorar?"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Observacoes</label>
+        <textarea class="form-input form-ta" id="fb-obs"
+          placeholder="Observacoes adicionais..."></textarea>
+      </div>
+
     </div>
     <div class="modal-ft">
-      <button class="btn btn-sec" onclick="closeModal('feedbackModal')">Cancelar</button>
-      <button class="btn btn-grad" id="saveFbBtn" onclick="saveFeedback()">Salvar Feedback</button>
+      <button class="btn btn-sec" onclick="closeModal('feedbackModal')">
+        Cancelar
+      </button>
+      <button class="btn btn-grad" id="saveFbBtn" onclick="saveFeedback()">
+        Salvar Feedback
+      </button>
     </div>
   </div>
 </div>
