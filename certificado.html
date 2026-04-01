@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>CNAcademy — Certificado</title>
+<link rel="stylesheet" href="css/style.css"/>
+<style>
+  @media print {
+    .nav, .cert-actions, .clouds, .stars-svg { display:none!important; }
+    body { background:#fff!important; }
+    .cert-wrap { padding:0; }
+    .cert-card { box-shadow:none; border:2px solid #D4C5FF; }
+  }
+</style>
+</head>
+<body>
+<div class="clouds"><div class="cl cl1"></div><div class="cl cl2"></div></div>
+<svg class="stars-svg" id="stars"></svg>
+
+<nav class="nav">
+  <div class="nav-left">
+    <span class="nav-icon">😇</span>
+    <div><div class="nav-title">CNAcademy</div><div class="nav-sub">Certificado de Conclusao</div></div>
+  </div>
+  <div class="nav-right">
+    <a href="javascript:history.back()" class="btn btn-sec btn-sm">Voltar</button>
+    <button class="btn btn-grad btn-sm" onclick="window.print()">Imprimir / Salvar PDF</button>
+  </div>
+</nav>
+
+<div class="cert-wrap">
+  <div class="cert-card" id="certCard">
+    <div class="cert-top-deco"></div>
+    <div class="cert-border"></div>
+    <div class="cert-angel">🎓</div>
+    <div class="cert-eyebrow">CNAcademy · Programa de Desenvolvimento PBL</div>
+    <div class="cert-academy">CNA Idiomas · Midia · Cadastra · 2026</div>
+    <div class="cert-title">Certificamos que</div>
+    <div class="cert-name" id="certNome">Carregando...</div>
+    <p class="cert-desc">
+      concluiu com excelencia o <strong>CNAcademy — Programa de Desenvolvimento PBL 2026</strong>,
+      programa de capacitacao em Midia de Performance conduzido pelo time CNA Idiomas da Cadastra,
+      abrangendo os modulos de Fundamentos de Midias Pagas, Analise e Leitura de Dados e
+      Planejamento e Estrategia, com trilha pratica de Google Sheets.
+    </p>
+    <div class="cert-datas">
+      <div class="cert-data-item">
+        <div class="cert-data-label">Inicio</div>
+        <div class="cert-data-val" id="certInicio">—</div>
+      </div>
+      <div class="cert-data-item">
+        <div class="cert-data-label">Termino</div>
+        <div class="cert-data-val" id="certTermino">—</div>
+      </div>
+      <div class="cert-data-item">
+        <div class="cert-data-label">Nota Media</div>
+        <div class="cert-data-val" id="certNota">—</div>
+      </div>
+    </div>
+    <div class="cert-divider"></div>
+    <div class="cert-stars" id="certStars"></div>
+    <div class="cert-assinatura">
+      <div class="cert-assinatura-linha"></div>
+      <div class="cert-assinatura-nome">Joel Rodrigues Ruivo</div>
+      <div class="cert-assinatura-cargo">Lider de Midia · CNA Idiomas · Cadastra</div>
+    </div>
+    <div class="cert-id" id="certId"></div>
+  </div>
+
+  <div class="cert-actions" style="text-align:center;margin-top:20px;display:flex;gap:10px;justify-content:center;">
+    <button class="btn btn-grad" onclick="window.print()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Salvar como PDF
+    </button>
+    <a href="formatura.html" class="btn btn-sec">Voltar a Formatura</a>
+  </div>
+</div>
+
+<script type="module">
+import { getUsuarios, getPDI } from './js/crud.js';
+import { auth } from './js/firebase.js';
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+onAuthStateChanged(auth, async (user) => {
+  if(!user){ window.location.href='login.html'; return; }
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id');
+  if(!id){ window.location.href='formatura.html'; return; }
+  const usuarios = await getUsuarios();
+  const u = usuarios.find(x=>x.id===id);
+  if(!u){ window.location.href='formatura.html'; return; }
+  const pdi = await getPDI(id);
+  const notas = pdi.filter(p=>p.nota>0).map(p=>p.nota);
+  const media = notas.length ? (notas.reduce((a,b)=>a+b,0)/notas.length).toFixed(1) : '—';
+  const mediaNum = parseFloat(media)||0;
+
+  document.getElementById('certNome').textContent    = u.nome || '—';
+  document.getElementById('certInicio').textContent  = fmtDate(u.dataInicio);
+  document.getElementById('certTermino').textContent = fmtDate(u.dataTermino || new Date().toISOString().split('T')[0]);
+  document.getElementById('certNota').textContent    = media !== '—' ? `${media} / 5.0` : '—';
+  document.getElementById('certId').textContent      = `ID: CNAcademy-2026-${id.substring(0,8).toUpperCase()}`;
+
+  // Stars
+  const starsWrap = document.getElementById('certStars');
+  for(let i=1;i<=5;i++){
+    const s = document.createElement('span');
+    s.style.fontSize='28px';
+    s.textContent = i <= Math.round(mediaNum) ? '⭐' : '☆';
+    starsWrap.appendChild(s);
+  }
+});
+
+function fmtDate(s){
+  if(!s) return '—';
+  try {
+    const d = new Date(s);
+    return d.toLocaleDateString('pt-BR', { day:'2-digit', month:'long', year:'numeric' });
+  } catch { return s; }
+}
+</script>
+<script src="js/stars.js"></script>
+</body>
+</html>
