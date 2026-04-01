@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>CNAcademy — Formatura</title>
+<link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+<div class="clouds"><div class="cl cl1"></div><div class="cl cl2"></div><div class="cl cl3"></div><div class="cl cl4"></div></div>
+<svg class="stars-svg" id="stars"></svg>
+
+<nav class="nav">
+  <div class="nav-left">
+    <span class="nav-icon">😇</span>
+    <div><div class="nav-title">CNAcademy</div><div class="nav-sub">Formatura</div></div>
+  </div>
+  <div class="nav-right">
+    <button class="btn btn-err btn-sm" onclick="doLogout()">Sair</button>
+  </div>
+</nav>
+
+<div class="formatura-hero">
+  <div class="formatura-rays"></div>
+  <div class="formatura-confetti" id="confetti"></div>
+  <div class="formatura-angel">🎓</div>
+  <div class="formatura-eyebrow">CNAcademy · Turma 2026</div>
+  <h1 class="formatura-title">Parabens, Formandas!</h1>
+  <p class="formatura-sub">Voces completaram o programa de desenvolvimento PBL do CNAcademy — uma jornada de 12 semanas de aprendizado, desafios e evolucao. O ceu e o limite!</p>
+</div>
+
+<section class="section">
+  <div class="section-inner">
+    <div class="section-label">👼 As Formandas</div>
+    <h2 class="section-title">Turma <span>CNAcademy 2026</span></h2>
+    <div class="formandas-grid" id="formandasGrid">
+      <div class="loading-msg">Carregando formandas...</div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <span class="footer-angel">🎓</span>
+  <div class="footer-title">CNAcademy — Turma 2026</div>
+  <div class="footer-sub">CNA Idiomas · Midia · Cadastra · 2026</div>
+  <div class="footer-copy">Programa conduzido por Joel Rodrigues Ruivo</div>
+</footer>
+
+<script src="js/firebase.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/crud.js"></script>
+<script src="js/stars.js"></script>
+<script src="js/formatura.js"></script>
+</body>
+</html>
