@@ -1,19 +1,18 @@
 import { db, auth } from './firebase.js';
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import { getUsuarios, getPDI, DESAFIOS, MODULOS, STATUS_CFG } from './crud.js';
+import { getUsuarios, getPDI, updatePDI, DESAFIOS, MODULOS, STATUS_CFG } from './crud.js';
 
-// Aguarda autenticacao antes de carregar
+// Variavel global acessivel por todas as funcoes
+window._meuId = null;
+
 onAuthStateChanged(auth, async (user) => {
-  if(!user){
-    window.location.href = 'login.html';
-    return;
-  }
+  if (!user) { window.location.href = 'login.html'; return; }
 
   try {
     const usuarios = await getUsuarios();
     const eu = usuarios.find(u => u.email === user.email);
 
-    if(!eu){
+    if (!eu) {
       document.getElementById('perfilCard').innerHTML = `
         <div style="color:var(--err);font-size:14px;padding:16px;">
           Perfil nao encontrado. Contate o Joel.
@@ -21,30 +20,31 @@ onAuthStateChanged(auth, async (user) => {
       return;
     }
 
+    // Salva o id globalmente ANTES de renderizar
+    window._meuId = eu.id;
+
     renderPerfil(eu);
     const pdi = await getPDI(eu.id);
     renderProgressoGeral(pdi);
     renderTimeline(pdi, eu);
 
-  } catch(e) {
+  } catch (e) {
     console.error('Erro ao carregar analista:', e);
     document.getElementById('perfilCard').innerHTML = `
       <div style="color:var(--err);font-size:14px;padding:16px;">
-        Erro ao carregar perfil: ${e.message}
+        Erro ao carregar: ${e.message}
       </div>`;
   }
 });
 
 function renderPerfil(u) {
-  // Atualiza o subtitulo do nav
   const navSub = document.getElementById('navSub');
-  if(navSub) navSub.textContent = u.nome;
-
+  if (navSub) navSub.textContent = u.nome;
   document.getElementById('perfilCard').innerHTML = `
-    <div class="perfil-av" style="background:${u.cor||'#7C5CCC'}">${initials(u.nome)}</div>
+    <div class="perfil-av" style="background:${u.cor || '#7C5CCC'}">${initials(u.nome)}</div>
     <div>
       <div class="perfil-name">${u.nome}</div>
-      <div class="perfil-cargo">${u.cargo||''}</div>
+      <div class="perfil-cargo">${u.cargo || ''}</div>
       <div class="perfil-meta">
         Inicio: ${fmtDate(u.dataInicio)} &nbsp;·&nbsp; CNAcademy Turma 2026
       </div>
@@ -53,27 +53,25 @@ function renderPerfil(u) {
 
 function renderProgressoGeral(pdi) {
   const wrap = document.getElementById('progressoGeral');
-  if(!wrap) return;
+  if (!wrap) return;
   wrap.innerHTML = '';
-
   Object.entries(MODULOS).forEach(([id, m]) => {
-    const semanasDom = m.semanas;
     const concluidas = pdi.filter(p =>
-      semanasDom.includes(p.semana) && p.status === 'concluido'
+      m.semanas.includes(p.semana) && p.status === 'concluido'
     ).length;
-    const pct = Math.round(concluidas / semanasDom.length * 100);
+    const pct = Math.round(concluidas / m.semanas.length * 100);
     const notas = pdi
-      .filter(p => semanasDom.includes(p.semana) && p.nota > 0)
+      .filter(p => m.semanas.includes(p.semana) && p.nota > 0)
       .map(p => p.nota);
     const media = notas.length
-      ? (notas.reduce((a,b) => a+b, 0) / notas.length).toFixed(1)
+      ? (notas.reduce((a, b) => a + b, 0) / notas.length).toFixed(1)
       : '—';
-
     wrap.innerHTML += `
       <div class="prog-modulo">
         <div class="prog-modulo-name">${m.nome}</div>
-        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--gs400);margin-bottom:6px;">
-          <span>${concluidas}/${semanasDom.length} semanas</span>
+        <div style="display:flex;justify-content:space-between;
+          font-size:11px;color:var(--gs400);margin-bottom:6px;">
+          <span>${concluidas}/${m.semanas.length} semanas</span>
           <span>Media: ${media} ${media !== '—' ? '⭐' : ''}</span>
         </div>
         <div class="prog-track">
@@ -100,7 +98,6 @@ function renderTimeline(pdi, u) {
 
     const semanaKey = semana.replace(/\s/g, '-');
 
-    // Monta lista de entregas
     const entregasHTML = d.entregas.map(e => `
       <li style="font-size:12px;color:var(--gs500);padding:5px 0;
         border-bottom:1px solid var(--gs100);display:flex;
@@ -111,19 +108,21 @@ function renderTimeline(pdi, u) {
 
     tl.innerHTML += `
       <div class="timeline-item" id="tl-${semanaKey}">
-        <div class="timeline-num" style="background:${cfg.color};color:${cfg.text};">${i + 1}</div>
+        <div class="timeline-num"
+          style="background:${cfg.color};color:${cfg.text};">${i + 1}
+        </div>
         <div class="timeline-content" style="width:100%;">
 
           <!-- Header -->
-          <div style="display:flex;align-items:flex-start;justify-content:space-between;
-            gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+          <div style="display:flex;align-items:flex-start;
+            justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
             <div>
               <div class="timeline-week">${semana} · Sheets: ${d.sheets}</div>
               <div class="timeline-tema">${d.tema}</div>
             </div>
             <span style="background:${cfg.color};color:${cfg.text};
-              border-radius:99px;padding:3px 10px;font-size:10px;font-weight:700;
-              white-space:nowrap;flex-shrink:0;">
+              border-radius:99px;padding:3px 10px;font-size:10px;
+              font-weight:700;white-space:nowrap;flex-shrink:0;">
               ${cfg.label}
             </span>
           </div>
@@ -157,13 +156,12 @@ function renderTimeline(pdi, u) {
               letter-spacing:.4px;color:var(--gs700);display:block;margin-bottom:8px;">
               O que entregar
             </strong>
-            <ul style="list-style:none;padding:0;">
-              ${entregasHTML}
-            </ul>
+            <ul style="list-style:none;padding:0;">${entregasHTML}</ul>
           </div>
 
           <!-- Formato + Dica -->
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;
+            gap:8px;margin-bottom:12px;">
             <div style="background:var(--ok-bg);border-radius:var(--r8);
               padding:10px 12px;font-size:12px;color:var(--ok);line-height:1.5;">
               <strong style="font-size:10px;text-transform:uppercase;
@@ -183,9 +181,12 @@ function renderTimeline(pdi, u) {
           </div>
 
           <!-- Controles: status + link -->
-          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+          <div style="display:flex;align-items:center;gap:8px;
+            flex-wrap:wrap;margin-bottom:10px;">
+
             <select
-              onchange="atualizarStatus('${semana}', this.value)"
+              id="status-${semanaKey}"
+              onchange="window.atualizarStatus('${semana}', this.value)"
               style="border:1px solid var(--gs200);border-radius:var(--r8);
                 padding:6px 10px;font:600 11px var(--fp);
                 color:${cfg.text};background:${cfg.color};
@@ -199,7 +200,7 @@ function renderTimeline(pdi, u) {
               <input
                 type="url"
                 id="link-${semanaKey}"
-                placeholder="Cole o link da sua entrega (Google Docs, Sheets...)"
+                placeholder="Cole o link da sua entrega..."
                 value="${item.linkEntrega || ''}"
                 style="flex:1;border:1px solid var(--gs200);border-radius:var(--r8);
                   padding:6px 10px;font:400 11px var(--fm);color:var(--gs900);
@@ -207,17 +208,19 @@ function renderTimeline(pdi, u) {
                 onfocus="this.style.borderColor='var(--purple)'"
                 onblur="this.style.borderColor='var(--gs200)'"/>
               <button
-                onclick="salvarLink('${semana}')"
+                onclick="window.salvarLink('${semana}')"
                 style="background:var(--purple);color:#fff;border:none;
                   border-radius:var(--r8);padding:6px 14px;
                   font:600 11px var(--fp);cursor:pointer;
-                  white-space:nowrap;flex-shrink:0;">
+                  white-space:nowrap;flex-shrink:0;transition:opacity 150ms;"
+                onmouseover="this.style.opacity='.8'"
+                onmouseout="this.style.opacity='1'">
                 Enviar
               </button>
             </div>
           </div>
 
-          <!-- Nota + Feedback do Joel -->
+          <!-- Nota + Feedback -->
           <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
             <span style="font-size:11px;color:var(--gs400);font-weight:600;">
               Avaliacao:
@@ -248,21 +251,94 @@ function renderTimeline(pdi, u) {
   });
 }
 
-// HELPERS
-function initials(nome){
-  if(!nome) return '?';
+// ── ATUALIZAR STATUS ──────────────────────
+window.atualizarStatus = async (semana, novoStatus) => {
+  const id = window._meuId;
+  if (!id) {
+    showToast('Aguarde o carregamento do perfil', 'err');
+    return;
+  }
+  const semanaKey = semana.replace(/\s/g, '-');
+  const sel = document.getElementById('status-' + semanaKey);
+  if (sel) sel.disabled = true;
+  try {
+    await updatePDI(id, semana, { semana, status: novoStatus });
+    // Atualiza a cor do select visualmente
+    const cfg = STATUS_CFG[novoStatus] || STATUS_CFG.a_fazer;
+    if (sel) {
+      sel.style.background = cfg.color;
+      sel.style.color = cfg.text;
+      sel.disabled = false;
+    }
+    showToast('Status atualizado!', 'ok');
+  } catch (e) {
+    console.error('Erro ao atualizar status:', e);
+    showToast('Erro ao salvar: ' + e.message, 'err');
+    if (sel) sel.disabled = false;
+  }
+};
+
+// ── SALVAR LINK ───────────────────────────
+window.salvarLink = async (semana) => {
+  const id = window._meuId;
+  if (!id) {
+    showToast('Aguarde o carregamento do perfil', 'err');
+    return;
+  }
+  const semanaKey = semana.replace(/\s/g, '-');
+  const input = document.getElementById('link-' + semanaKey);
+  if (!input) return;
+  const link = input.value.trim();
+  if (!link) {
+    showToast('Cole um link valido antes de enviar', 'err');
+    return;
+  }
+  // Valida se e uma URL
+  try { new URL(link); } catch {
+    showToast('O link nao parece valido. Use uma URL completa (https://...)', 'err');
+    return;
+  }
+  input.disabled = true;
+  try {
+    await updatePDI(id, semana, { semana, linkEntrega: link });
+    input.style.borderColor = 'var(--ok)';
+    input.disabled = false;
+    showToast('Entrega enviada para o Joel!', 'ok');
+  } catch (e) {
+    console.error('Erro ao salvar link:', e);
+    showToast('Erro ao enviar entrega: ' + e.message, 'err');
+    input.disabled = false;
+  }
+};
+
+// ── HELPERS ───────────────────────────────
+function initials(nome) {
+  if (!nome) return '?';
   const p = nome.trim().split(' ');
   return p.length > 1
-    ? (p[0][0] + p[p.length-1][0]).toUpperCase()
-    : nome.substring(0,2).toUpperCase();
+    ? (p[0][0] + p[p.length - 1][0]).toUpperCase()
+    : nome.substring(0, 2).toUpperCase();
 }
 
-function fmtDate(s){
-  if(!s) return '—';
+function fmtDate(s) {
+  if (!s) return '—';
   try {
-    const d = new Date(s+'T12:00:00');
-    return d.toLocaleDateString('pt-BR', {
-      day:'2-digit', month:'long', year:'numeric'
+    return new Date(s + 'T12:00:00').toLocaleDateString('pt-BR', {
+      day: '2-digit', month: 'long', year: 'numeric'
     });
   } catch { return s; }
+}
+
+function showToast(msg, t = 'info') {
+  let wrap = document.querySelector('.toast-wrap');
+  if (!wrap) {
+    wrap = document.createElement('div');
+    wrap.className = 'toast-wrap';
+    document.body.appendChild(wrap);
+  }
+  const el = document.createElement('div');
+  el.className = `toast t-${t}`;
+  el.textContent = msg;
+  wrap.appendChild(el);
+  setTimeout(() => el.remove(), 3500);
 }
