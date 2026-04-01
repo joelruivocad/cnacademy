@@ -7,51 +7,99 @@
 <link rel="stylesheet" href="css/style.css"/>
 </head>
 <body>
-<div class="clouds"><div class="cl cl1"></div><div class="cl cl2"></div><div class="cl cl3"></div></div>
+<div class="clouds">
+  <div class="cl cl1"></div>
+  <div class="cl cl2"></div>
+  <div class="cl cl3"></div>
+</div>
 <svg class="stars-svg" id="stars"></svg>
 
 <div class="login-wrap">
   <div class="login-card">
+
+    <!-- Botao de voltar para a pagina inicial -->
+    <div style="text-align:left;margin-bottom:8px;">
+      <a href="index.html"
+        style="display:inline-flex;align-items:center;gap:5px;
+          font:500 12px var(--fp);color:var(--gs400);
+          text-decoration:none;transition:color 150ms;"
+        onmouseover="this.style.color='var(--purple)'"
+        onmouseout="this.style.color='var(--gs400)'">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
+        Voltar para o inicio
+      </a>
+    </div>
+
     <div class="login-angel">😇</div>
     <div class="login-title">CNAcademy</div>
     <div class="login-sub">Entre com seu email corporativo</div>
+
     <div class="form-group">
       <label class="form-label">Email</label>
-      <input type="email" id="loginEmail" class="form-input" placeholder="seu@cadastra.com"/>
+      <input type="email" id="loginEmail" class="form-input"
+        placeholder="seu@cadastra.com"/>
     </div>
+
     <div class="form-group">
       <label class="form-label">Senha</label>
-      <input type="password" id="loginPassword" class="form-input" placeholder="••••••••"/>
+      <input type="password" id="loginPassword" class="form-input"
+        placeholder="••••••••"/>
     </div>
+
     <div class="login-error" id="loginError"></div>
-    <button class="btn btn-grad btn-full" id="loginBtn" onclick="doLogin()">Entrar no Programa</button>
-    <div class="login-footer">CNAcademy · CNA Idiomas · Cadastra · 2026</div>
+
+    <button class="btn btn-grad btn-full" id="loginBtn"
+      onclick="doLogin()">
+      Entrar no Programa
+    </button>
+
+    <div class="login-footer">
+      CNAcademy · CNA Idiomas · Cadastra · 2026
+    </div>
+
   </div>
 </div>
 
-<script type="module" src="js/firebase.js"></script>
-<script type="module" src="js/auth.js"></script>
 <script src="js/stars.js"></script>
+<script type="module" src="js/auth.js"></script>
 <script type="module">
-import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import {
+  signInWithEmailAndPassword
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { auth } from './js/firebase.js';
 
-async function doLogin(){
-  const btn=document.getElementById('loginBtn');
-  const err=document.getElementById('loginError');
-  const email=document.getElementById('loginEmail').value.trim();
-  const pass=document.getElementById('loginPassword').value;
-  if(!email||!pass){err.textContent='Preencha email e senha.';return;}
-  btn.disabled=true;btn.textContent='Entrando...';err.textContent='';
-  try{
-    await signInWithEmailAndPassword(auth,email,pass);
-  } catch(e){
-    err.textContent='Email ou senha incorretos.';
-    btn.disabled=false;btn.textContent='Entrar no Programa';
+async function doLogin() {
+  const btn   = document.getElementById('loginBtn');
+  const err   = document.getElementById('loginError');
+  const email = document.getElementById('loginEmail').value.trim();
+  const pass  = document.getElementById('loginPassword').value;
+
+  if (!email || !pass) {
+    err.textContent = 'Preencha email e senha.';
+    return;
+  }
+
+  btn.disabled    = true;
+  btn.textContent = 'Entrando...';
+  err.textContent = '';
+
+  try {
+    await signInWithEmailAndPassword(auth, email, pass);
+  } catch (e) {
+    err.textContent = 'Email ou senha incorretos.';
+    btn.disabled    = false;
+    btn.textContent = 'Entrar no Programa';
   }
 }
+
 window.doLogin = doLogin;
-document.addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter') doLogin();
+});
 </script>
 </body>
 </html>
