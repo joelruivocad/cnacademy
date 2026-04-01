@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>CNAcademy — Meu Progresso</title>
+<link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+<div class="clouds"><div class="cl cl1"></div><div class="cl cl2"></div><div class="cl cl3"></div></div>
+<svg class="stars-svg" id="stars"></svg>
+
+<nav class="nav">
+  <div class="nav-left">
+    <span class="nav-icon">😇</span>
+    <div><div class="nav-title">CNAcademy</div><div class="nav-sub" id="navSub">Meu Progresso</div></div>
+  </div>
+  <div class="nav-right">
+    <a href="formatura.html" class="btn btn-sec btn-sm">Formatura</a>
+    <button class="btn btn-err btn-sm" onclick="doLogout()">Sair</button>
+  </div>
+</nav>
+
+<main class="main">
+  <!-- Perfil -->
+  <div class="perfil-card" id="perfilCard">
+    <div class="loading-msg">Carregando seu perfil...</div>
+  </div>
+
+  <!-- Progresso geral -->
+  <div class="progresso-geral" id="progressoGeral"></div>
+
+  <!-- Timeline de semanas -->
+  <div class="section-label" style="margin:28px 0 14px;">📅 Sua Jornada</div>
+  <div class="timeline" id="timeline">
+    <div class="loading-msg">Carregando desafios...</div>
+  </div>
+</main>
+
+<script src="js/firebase.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/crud.js"></script>
+<script src="js/stars.js"></script>
+<script src="js/analista.js"></script>
+</body>
+</html>
