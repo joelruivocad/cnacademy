@@ -184,23 +184,23 @@ async function renderAnalistas() {
 }
 
 // ── FEEDBACK MODAL ────────────────────────
-window.openFeedback = async (id, nome) => {
+window.openFeedback = (id, nome) => {
   editAnalistaId = id;
   document.getElementById('fb-analista-nome').textContent = nome;
 
-  // Monta o select de semanas
   const sel = document.getElementById('fb-semana');
   sel.innerHTML = Object.keys(DESAFIOS).map(s =>
     `<option value="${s}">${s} — ${DESAFIOS[s].tema}</option>`
   ).join('');
 
-  // Carrega dados da primeira semana imediatamente
-  await loadFeedbackData(id, sel.value);
-
-  // Quando mudar de semana recarrega
+  // Define o handler de mudanca
   sel.onchange = () => loadFeedbackData(id, sel.value);
 
+  // Abre o modal PRIMEIRO
   openModal('feedbackModal');
+
+  // Carrega os dados DEPOIS — modal ja esta aberto com o elemento
+  loadFeedbackData(id, sel.value);
 };
 
 async function loadFeedbackData(analistaId, semana) {
