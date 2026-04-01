@@ -85,57 +85,164 @@ function renderProgressoGeral(pdi) {
 
 function renderTimeline(pdi, u) {
   const tl = document.getElementById('timeline');
-  if(!tl) return;
+  if (!tl) return;
   tl.innerHTML = '';
 
   Object.entries(DESAFIOS).forEach(([semana, d], i) => {
     const item = pdi.find(p => p.semana === semana) || {};
-    const st  = item.status || 'a_fazer';
-    const cfg = STATUS_CFG[st] || STATUS_CFG.a_fazer;
+    const st   = item.status || 'a_fazer';
+    const cfg  = STATUS_CFG[st] || STATUS_CFG.a_fazer;
     const nota = item.nota || 0;
     const stars = nota > 0
-      ? '<span style="color:#F5C842">⭐</span>'.repeat(nota)
-        + '<span style="opacity:.3">☆</span>'.repeat(5 - nota)
-      : '<span style="opacity:.3">☆☆☆☆☆</span>';
+      ? '<span style="color:#F5C842">⭐</span>'.repeat(nota) +
+        '<span style="opacity:.25">☆</span>'.repeat(5 - nota)
+      : '<span style="opacity:.25">☆☆☆☆☆</span>';
+
+    const semanaKey = semana.replace(/\s/g, '-');
+
+    // Monta lista de entregas
+    const entregasHTML = d.entregas.map(e => `
+      <li style="font-size:12px;color:var(--gs500);padding:5px 0;
+        border-bottom:1px solid var(--gs100);display:flex;
+        align-items:flex-start;gap:8px;line-height:1.5;">
+        <span style="color:var(--purple);font-weight:700;flex-shrink:0;margin-top:1px;">→</span>
+        <span>${e}</span>
+      </li>`).join('');
 
     tl.innerHTML += `
-      <div class="timeline-item">
-        <div class="timeline-num"
-          style="background:${cfg.color};color:${cfg.text};">
-          ${i+1}
-        </div>
-        <div class="timeline-content">
-          <div class="timeline-week">${semana} · Sheets: ${d.sheets}</div>
-          <div class="timeline-tema">${d.tema}</div>
-          <div style="display:flex;align-items:center;gap:10px;margin:6px 0;">
+      <div class="timeline-item" id="tl-${semanaKey}">
+        <div class="timeline-num" style="background:${cfg.color};color:${cfg.text};">${i + 1}</div>
+        <div class="timeline-content" style="width:100%;">
+
+          <!-- Header -->
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;
+            gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+            <div>
+              <div class="timeline-week">${semana} · Sheets: ${d.sheets}</div>
+              <div class="timeline-tema">${d.tema}</div>
+            </div>
             <span style="background:${cfg.color};color:${cfg.text};
-              border-radius:99px;padding:3px 10px;font-size:10px;font-weight:700;">
+              border-radius:99px;padding:3px 10px;font-size:10px;font-weight:700;
+              white-space:nowrap;flex-shrink:0;">
               ${cfg.label}
             </span>
-            <span style="font-size:16px;">${stars}</span>
           </div>
-          <div style="font-size:12px;color:var(--gs500);line-height:1.55;
-            background:var(--gs50);border-radius:var(--r8);padding:10px 12px;
-            margin-bottom:4px;">
+
+          <!-- Contexto -->
+          <div style="background:var(--purple-bg);border-radius:var(--r8);
+            padding:10px 14px;margin-bottom:10px;font-size:12px;
+            color:var(--purple);line-height:1.6;">
             <strong style="font-size:10px;text-transform:uppercase;
-              letter-spacing:.4px;color:var(--gs700);">Desafio</strong><br/>
+              letter-spacing:.4px;display:block;margin-bottom:4px;">
+              Contexto
+            </strong>
             ${d.contexto}
           </div>
+
+          <!-- Objetivo -->
+          <div style="background:var(--brand-light);border-radius:var(--r8);
+            padding:10px 14px;margin-bottom:10px;font-size:12px;
+            color:var(--brand);line-height:1.6;">
+            <strong style="font-size:10px;text-transform:uppercase;
+              letter-spacing:.4px;display:block;margin-bottom:4px;">
+              Objetivo da Semana
+            </strong>
+            ${d.objetivo}
+          </div>
+
+          <!-- Entregas -->
+          <div style="background:var(--gs50);border:1px solid var(--gs100);
+            border-radius:var(--r8);padding:12px 14px;margin-bottom:10px;">
+            <strong style="font-size:10px;text-transform:uppercase;
+              letter-spacing:.4px;color:var(--gs700);display:block;margin-bottom:8px;">
+              O que entregar
+            </strong>
+            <ul style="list-style:none;padding:0;">
+              ${entregasHTML}
+            </ul>
+          </div>
+
+          <!-- Formato + Dica -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+            <div style="background:var(--ok-bg);border-radius:var(--r8);
+              padding:10px 12px;font-size:12px;color:var(--ok);line-height:1.5;">
+              <strong style="font-size:10px;text-transform:uppercase;
+                letter-spacing:.4px;display:block;margin-bottom:3px;">
+                Formato de Entrega
+              </strong>
+              ${d.formato}
+            </div>
+            <div style="background:var(--warn-bg);border-radius:var(--r8);
+              padding:10px 12px;font-size:12px;color:var(--warn);line-height:1.5;">
+              <strong style="font-size:10px;text-transform:uppercase;
+                letter-spacing:.4px;display:block;margin-bottom:3px;">
+                Dica do Joel
+              </strong>
+              ${d.dica}
+            </div>
+          </div>
+
+          <!-- Controles: status + link -->
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+            <select
+              onchange="atualizarStatus('${semana}', this.value)"
+              style="border:1px solid var(--gs200);border-radius:var(--r8);
+                padding:6px 10px;font:600 11px var(--fp);
+                color:${cfg.text};background:${cfg.color};
+                cursor:pointer;outline:none;flex-shrink:0;">
+              ${Object.entries(STATUS_CFG).map(([k, v]) =>
+                `<option value="${k}" ${k === st ? 'selected' : ''}>${v.label}</option>`
+              ).join('')}
+            </select>
+
+            <div style="display:flex;gap:6px;flex:1;min-width:220px;">
+              <input
+                type="url"
+                id="link-${semanaKey}"
+                placeholder="Cole o link da sua entrega (Google Docs, Sheets...)"
+                value="${item.linkEntrega || ''}"
+                style="flex:1;border:1px solid var(--gs200);border-radius:var(--r8);
+                  padding:6px 10px;font:400 11px var(--fm);color:var(--gs900);
+                  background:var(--white);outline:none;transition:border-color 150ms;"
+                onfocus="this.style.borderColor='var(--purple)'"
+                onblur="this.style.borderColor='var(--gs200)'"/>
+              <button
+                onclick="salvarLink('${semana}')"
+                style="background:var(--purple);color:#fff;border:none;
+                  border-radius:var(--r8);padding:6px 14px;
+                  font:600 11px var(--fp);cursor:pointer;
+                  white-space:nowrap;flex-shrink:0;">
+                Enviar
+              </button>
+            </div>
+          </div>
+
+          <!-- Nota + Feedback do Joel -->
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+            <span style="font-size:11px;color:var(--gs400);font-weight:600;">
+              Avaliacao:
+            </span>
+            <span style="font-size:15px;">${stars}</span>
+          </div>
+
           ${item.pontosFortes ? `
             <div class="timeline-fb" style="margin-top:6px;">
-              <div class="timeline-fb-label">Pontos Fortes</div>
+              <div class="timeline-fb-label">Pontos Fortes — Joel</div>
               ${item.pontosFortes}
             </div>` : ''}
+
           ${item.pontosMelhoria ? `
             <div class="timeline-fb" style="margin-top:6px;">
-              <div class="timeline-fb-label">Pontos de Melhoria</div>
+              <div class="timeline-fb-label">Pontos de Melhoria — Joel</div>
               ${item.pontosMelhoria}
             </div>` : ''}
+
           ${item.observacoes ? `
             <div class="timeline-fb" style="margin-top:6px;">
-              <div class="timeline-fb-label">Observacoes de Joel</div>
+              <div class="timeline-fb-label">Observacoes — Joel</div>
               ${item.observacoes}
             </div>` : ''}
+
         </div>
       </div>`;
   });
