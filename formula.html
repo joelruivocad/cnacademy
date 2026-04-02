@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>CNAcademy — Formula</title>
+<link rel="stylesheet" href="css/style.css"/>
+<style>
+.formula-hero{
+  background:linear-gradient(135deg,var(--purple-bg),var(--brand-light));
+  border-radius:var(--r24);
+  padding:40px 48px;
+  margin-bottom:28px;
+  position:relative;
+  overflow:hidden;
+}
+.formula-hero::before{
+  content:'📊';
+  position:absolute;
+  right:40px;top:50%;
+  transform:translateY(-50%);
+  font-size:80px;
+  opacity:.12;
+}
+.formula-semana{
+  font:700 11px var(--fm);
+  color:var(--purple);
+  text-transform:uppercase;
+  letter-spacing:.6px;
+  margin-bottom:8px;
+}
+.formula-nome{
+  font-family:var(--fd);
+  font-size:clamp(24px,4vw,36px);
+  font-weight:700;
+  color:var(--gs900);
+  margin-bottom:6px;
+}
+.formula-nome span{
+  background:linear-gradient(135deg,var(--purple),var(--brand));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.formula-desc{
+  font-size:14px;
+  color:var(--gs500);
+  line-height:1.65;
+  max-width:560px;
+}
+.bloco{
+  background:rgba(255,255,255,.88);
+  border:1px solid rgba(255,255,255,.95);
+  border-radius:var(--r20);
+  padding:28px 32px;
+  box-shadow:var(--sh-md);
+  backdrop-filter:blur(10px);
+  margin-bottom:20px;
+}
+.bloco-titulo{
+  font-family:var(--fd);
+  font-size:16px;
+  font-weight:700;
+  color:var(--gs900);
+  margin-bottom:16px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+/* Sintaxe */
+.sintaxe-box{
+  background:var(--gs900);
+  border-radius:var(--r8);
+  padding:16px 20px;
+  font:400 14px var(--fm);
+  color:#E0E0E0;
+  margin-bottom:12px;
+  overflow-x:auto;
+  line-height:1.8;
+}
+.sintaxe-box .fn{color:#C792EA;}
+.sintaxe-box .arg{color:#82AAFF;}
+.sintaxe-box .op{color:#89DDFF;}
+.sintaxe-box .str{color:#C3E88D;}
+.sintaxe-box .num{color:#F78C6C;}
+.sintaxe-box .comment{color:#546E7A;font-style:italic;}
+/* Parametros */
+.param-list{list-style:none;padding:0;}
+.param-item{
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  padding:10px 0;
+  border-bottom:1px solid var(--gs100);
+  font-size:13px;
+}
+.param-item:last-child{border-bottom:none;}
+.param-nome{
+  font:700 12px var(--fm);
+  color:var(--purple);
+  background:var(--purple-bg);
+  border-radius:var(--r8);
+  padding:2px 8px;
+  white-space:nowrap;
+  flex-shrink:0;
+}
+.param-desc{color:var(--gs500);line-height:1.55;}
+/* Exemplos */
+.exemplo-tab{
+  display:flex;
+  gap:4px;
+  margin-bottom:16px;
+  background:var(--gs50);
+  border-radius:var(--r8);
+  padding:4px;
+}
+.ex-tab-btn{
+  padding:6px 14px;
+  border-radius:var(--r8);
+  font:600 12px var(--fp);
+  cursor:pointer;
+  border:none;
+  background:transparent;
+  color:var(--gs500);
+  transition:all 150ms;
+}
+.ex-tab-btn.active{
+  background:var(--white);
+  color:var(--purple);
+  box-shadow:var(--sh-sm);
+}
+.ex-content{display:none;}
+.ex-content.active{display:block;}
+/* Tabela de exemplo */
+.sheets-table{
+  width:100%;
+  border-collapse:collapse;
+  font:400 12px var(--fm);
+  margin-bottom:12px;
+}
+.sheets-table th{
+  background:var(--gs50);
+  border:1px solid var(--gs200);
+  padding:8px 12px;
+  font-weight:700;
+  color:var(--gs700);
+  text-align:center;
+  font-size:11px;
+}
+.sheets-table td{
+  border:1px solid var(--gs200);
+  padding:8px 12px;
+  color:var(--gs700);
+  text-align:center;
+}
+.sheets-table .col-a{background:#E8F0FE;font-weight:600;color:var(--blue);}
+.sheets-table .formula-cell{
+  background:#E6F4EA;
+  color:var(--ok);
+  font-weight:600;
+}
+.sheets-table .header-col{
+  background:#F3E8FD;
+  font-weight:700;
+  color:var(--purple);
+}
+/* Resultado */
+.resultado-box{
+  background:var(--ok-bg);
+  border:1px solid var(--ok);
+  border-radius:var(--r8);
+  padding:12px 16px;
+  font-size:13px;
+  color:var(--ok);
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-top:8px;
+}
+/* Erros comuns */
+.erro-item{
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  padding:12px 0;
+  border-bottom:1px solid var(--gs100);
+}
+.erro-item:last-child{border-bottom:none;}
+.erro-code{
+  font:700 11px var(--fm);
+  color:var(--err);
+  background:var(--err-bg);
+  border-radius:var(--r8);
+  padding:3px 8px;
+  white-space:nowrap;
+  flex-shrink:0;
+}
+.erro-desc{font-size:13px;color:var(--gs500);line-height:1.55;}
+/* Dica */
+.dica-box{
+  background:linear-gradient(135deg,var(--purple-bg),var(--brand-light));
+  border-radius:var(--r8);
+  padding:16px 20px;
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+}
+.dica-icon{font-size:22px;flex-shrink:0;}
+.dica-text{font-size:13px;color:var(--gs700);line-height:1.65;}
+.dica-text strong{color:var(--purple);}
+/* Nav lateral de formulas */
+.formula-nav{
+  background:rgba(255,255,255,.88);
+  border:1px solid rgba(255,255,255,.95);
+  border-radius:var(--r20);
+  padding:20px;
+  box-shadow:var(--sh-md);
+  backdrop-filter:blur(10px);
+  position:sticky;
+  top:80px;
+}
+.formula-nav-title{
+  font:700 12px var(--fd);
+  color:var(--gs700);
+  text-transform:uppercase;
+  letter-spacing:.5px;
+  margin-bottom:12px;
+}
+.formula-nav-item{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 10px;
+  border-radius:var(--r8);
+  cursor:pointer;
+  transition:all 150ms;
+  text-decoration:none;
+  margin-bottom:4px;
+}
+.formula-nav-item:hover{
+  background:var(--purple-bg);
+  color:var(--purple);
+}
+.formula-nav-item.active{
+  background:var(--purple-bg);
+  color:var(--purple);
+  font-weight:600;
+}
+.formula-nav-semana{
+  font:600 10px var(--fm);
+  color:var(--gs400);
+  width:22px;
+  flex-shrink:0;
+}
+.formula-nav-nome{
+  font-size:12px;
+  color:var(--gs700);
+  font-family:var(--fm);
+}
+.formula-nav-item.active .formula-nav-nome{color:var(--purple);}
+/* Layout com nav lateral */
+.formula-layout{
+  display:grid;
+  grid-template-columns:220px 1fr;
+  gap:24px;
+  align-items:start;
+}
+@media(max-width:900px){
+  .formula-layout{grid-template-columns:1fr;}
+  .formula-nav{position:static;}
+}
+</style>
+</head>
+<body>
+<div class="clouds">
+  <div class="cl cl1"></div><div class="cl cl2"></div>
+  <div class="cl cl3"></div><div class="cl cl4"></div>
+</div>
+<svg class="stars-svg" id="stars"></svg>
+
+<nav class="nav">
+  <div class="nav-left">
+    <span class="nav-icon">😇</span>
+    <div>
+      <div class="nav-title">CNAcademy</div>
+      <div class="nav-sub" id="navSub">Trilha de Formulas</div>
+    </div>
+  </div>
+  <div class="nav-right">
+    <button class="btn btn-sec btn-sm" onclick="history.back()">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+      Voltar
+    </button>
+    <button class="btn btn-err btn-sm" onclick="doLogout()">Sair</button>
+  </div>
+</nav>
+
+<main class="main">
+
+  <!-- Hero dinamico -->
+  <div class="formula-hero" id="formulaHero">
+    <div class="formula-semana" id="heroSemana">Semana 1</div>
+    <div class="formula-nome" id="heroNome">
+      <span>SOMASES</span>
+    </div>
+    <div class="formula-desc" id="heroDesc">
+      Soma valores em um intervalo com base em multiplos criterios.
+      Essencial para calcular investimento por plataforma e periodo.
+    </div>
+  </div>
+
+  <div class="formula-layout">
+
+    <!-- NAV LATERAL -->
+    <div class="formula-nav">
+      <div class="formula-nav-title">Trilha de Sheets</div>
+      <div id="formulaNavList"></div>
+    </div>
+
+    <!-- CONTEUDO DA FORMULA -->
+    <div id="formulaContent"></div>
+
+  </div>
+</main>
+
+<script src="js/stars.js"></script>
+<script type="module" src="js/auth.js"></script>
+<script type="module">
+
+// ── DADOS DAS FORMULAS ────────────────────
+const FORMULAS = {
+  'S1': {
+    semana: 'Semana 1',
+    nome: 'SOMASES',
+    desc: 'Soma valores em um intervalo com base em multiplos criterios. Essencial para calcular investimento por plataforma e periodo.',
+    sintaxe: `<span class="fn">=SOMASES</span>(<span class="arg">intervalo_soma</span>; <span class="arg">intervalo_criterio1</span>; <span class="arg">criterio1</span>; <span class="arg">intervalo_criterio2</span>; <span class="arg">criterio2</span>)`,
+    parametros: [
+      { nome: 'intervalo_soma', desc: 'O intervalo de celulas que voce quer somar. Ex: a coluna de Investimento.' },
+      { nome: 'intervalo_criterio1', desc: 'O intervalo onde a primeira condicao sera verificada. Ex: a coluna de Plataforma.' },
+      { nome: 'criterio1', desc: 'A condicao a ser atendida no primeiro intervalo. Ex: "Google".' },
+      { nome: 'intervalo_criterio2', desc: 'Intervalo da segunda condicao. Ex: a coluna de Mes.' },
+      { nome: 'criterio2', desc: 'Segunda condicao. Ex: "Abril".' },
+    ],
+    exemploBasico: {
+      descricao: 'Soma todos os valores da coluna B onde a coluna A for igual a "Google":',
+      formula: '=SOMASES(B2:B100; A2:A100; "Google")',
+      tabela: `<table class="sheets-table">
+        <tr><th>A — Plataforma</th><th>B — Investimento</th></tr>
+        <tr><td>Google</td><td>R$ 4.500</td></tr>
+        <tr><td>Meta</td><td>R$ 3.200</td></tr>
+        <tr><td>Google</td><td>R$ 2.800</td></tr>
+        <tr><td>TikTok</td><td>R$ 1.100</td></tr>
+        <tr><td class="formula-cell" colspan="2">=SOMASES(B2:B5; A2:A5; "Google")</td></tr>
+      </table>`,
+      resultado: 'R$ 7.300 — soma apenas os valores onde a plataforma e "Google"'
+    },
+    exemploCNA: {
+      descricao: 'No CNA, use SOMASES para somar o investimento total em Google no mes de Abril:',
+      formula: '=SOMASES(D2:D100; B2:B100; "Google"; C2:C100; "Abril")',
+      tabela: `<table class="sheets-table">
+        <tr><th>B — Plataforma</th><th>C — Mes</th><th>D — Investimento</th></tr>
+        <tr><td>Google</td><td>Abril</td><td>R$ 4.500</td></tr>
+        <tr><td>Meta</td><td>Abril</td><td>R$ 3.200</td></tr>
+        <tr><td>Google</td><td>Maio</td><td>R$ 4.800</td></tr>
+        <tr><td>Google</td><td>Abril</td><td>R$ 2.800</td></tr>
+        <tr><td class="formula-cell" colspan="3">=SOMASES(D2:D4; B2:B4; "Google"; C2:C4; "Abril")</td></tr>
+      </table>`,
+      resultado: 'R$ 7.300 — soma apenas Google em Abril, ignorando outros meses e plataformas'
+    },
+    erros: [
+      { code: '#VALOR!', desc: 'Os intervalos tem tamanhos diferentes. Certifique-se que intervalo_soma e intervalo_criterio tem o mesmo numero de linhas.' },
+      { code: 'Resultado 0', desc: 'O criterio nao foi encontrado. Verifique se ha espacos ou letras maiusculas/minusculas diferentes entre o criterio e os dados.' },
+    ],
+    dica: 'Use <strong>&</strong> para criar criterios dinamicos referenciando celulas. Ex: ao inves de "Google", use <strong>A1</strong> — assim voce muda o filtro so alterando a celula A1, sem editar a formula.'
+  },
+
+  'S2': {
+    semana: 'Semana 2',
+    nome: 'Variacao % + Formatacao Condicional',
+    desc: 'Calcula a variacao percentual entre dois periodos e usa formatacao condicional para destacar automaticamente valores criticos.',
+    sintaxe: `<span class="comment">// Variacao percentual</span>\n<span class="fn">=</span>(<span class="arg">valor_novo</span> <span class="op">-</span> <span class="arg">valor_antigo</span>) <span class="op">/</span> <span class="arg">valor_antigo</span>`,
+    parametros: [
+      { nome: 'valor_novo', desc: 'O valor do periodo mais recente. Ex: CPL desta semana.' },
+      { nome: 'valor_antigo', desc: 'O valor do periodo anterior. Ex: CPL da semana passada.' },
+    ],
+    exemploBasico: {
+      descricao: 'Calcula a variacao do CPL entre duas semanas:',
+      formula: '=(B2-A2)/A2',
+      tabela: `<table class="sheets-table">
+        <tr><th>A — CPL Semana 1</th><th>B — CPL Semana 2</th><th>C — Variacao</th></tr>
+        <tr><td>R$ 40</td><td>R$ 52</td><td class="formula-cell">=(B2-A2)/A2</td></tr>
+      </table>`,
+      resultado: '30% — o CPL subiu 30% de uma semana para outra'
+    },
+    exemploCNA: {
+      descricao: 'Compare o CPL do Inglês entre duas semanas e destaque automaticamente se subiu mais de 20%:',
+      formula: '=(D3-C3)/C3',
+      tabela: `<table class="sheets-table">
+        <tr><th>B — Campanha</th><th>C — CPL S1</th><th>D — CPL S2</th><th>E — Variacao</th></tr>
+        <tr><td>Ingles Search</td><td>R$ 38</td><td>R$ 46</td><td class="formula-cell">=(D2-C2)/C2</td></tr>
+        <tr><td>Kids Social</td><td>R$ 55</td><td>R$ 50</td><td class="formula-cell">=(D3-C3)/C3</td></tr>
+      </table>`,
+      resultado: '+21% no Ingles (critico) e -9% no Kids (melhora). Formatacao condicional destaca o Ingles em vermelho automaticamente.'
+    },
+    erros: [
+      { code: '#DIV/0!', desc: 'O valor antigo e zero. Use SEERRO para tratar: =SEERRO((B2-A2)/A2; 0)' },
+      { code: 'Resultado estranho', desc: 'Certifique-se de formatar a celula como Porcentagem (%) para exibir corretamente.' },
+    ],
+    dica: 'Para aplicar Formatacao Condicional: selecione a coluna de variacao → Formatar → Formatacao condicional → "Maior que 0,2" → cor vermelha. Assim qualquer variacao acima de <strong>20% fica vermelha automaticamente</strong>.'
+  },
+
+  'S3': {
+    semana: 'Semana 3',
+    nome: 'CONT.SES',
+    desc: 'Conta o numero de celulas que atendem a multiplos criterios. Util para contar campanhas por status, plataforma ou faixa de CPL.',
+    sintaxe: `<span class="fn">=CONT.SES</span>(<span class="arg">intervalo1</span>; <span class="arg">criterio1</span>; <span class="arg">intervalo2</span>; <span class="arg">criterio2</span>)`,
+    parametros: [
+      { nome: 'intervalo1', desc: 'Primeiro intervalo de celulas a verificar.' },
+      { nome: 'criterio1', desc: 'Condicao a verificar no primeiro intervalo.' },
+      { nome: 'intervalo2', desc: 'Segundo intervalo (opcional).' },
+      { nome: 'criterio2', desc: 'Segunda condicao (opcional).' },
+    ],
+    exemploBasico: {
+      descricao: 'Conta quantas campanhas sao do Google:',
+      formula: '=CONT.SES(A2:A100; "Google")',
+      tabela: `<table class="sheets-table">
+        <tr><th>A — Plataforma</th><th>B — Status</th></tr>
+        <tr><td>Google</td><td>Ativa</td></tr>
+        <tr><td>Meta</td><td>Ativa</td></tr>
+        <tr><td>Google</td><td>Pausada</td></tr>
+        <tr><td>Google</td><td>Ativa</td></tr>
+        <tr><td class="formula-cell" colspan="2">=CONT.SES(A2:A5; "Google")</td></tr>
+      </table>`,
+      resultado: '3 — ha 3 campanhas do Google'
+    },
+    exemploCNA: {
+      descricao: 'Conta quantas campanhas do Google estao com pacing abaixo de 50% no meio do mes:',
+      formula: '=CONT.SES(B2:B20; "Google"; D2:D20; "<50%")',
+      tabela: `<table class="sheets-table">
+        <tr><th>B — Plataforma</th><th>C — Campanha</th><th>D — Pacing</th></tr>
+        <tr><td>Google</td><td>Ingles Search</td><td>42%</td></tr>
+        <tr><td>Google</td><td>Institucional</td><td>65%</td></tr>
+        <tr><td>Meta</td><td>Ingles Social</td><td>38%</td></tr>
+        <tr><td>Google</td><td>Kids Search</td><td>45%</td></tr>
+        <tr><td class="formula-cell" colspan="3">=CONT.SES(B2:B5;"Google";D2:D5;"<0,5")</td></tr>
+      </table>`,
+      resultado: '2 — duas campanhas do Google com pacing abaixo de 50%'
+    },
+    erros: [
+      { code: 'Resultado 0', desc: 'O criterio nao esta sendo encontrado. Verifique espacos extras e a formatacao dos dados.' },
+      { code: '#VALOR!', desc: 'Os intervalos tem tamanhos diferentes. Todos os intervalos precisam ter o mesmo numero de linhas.' },
+    ],
+    dica: 'Use <strong>"<"</strong>, <strong>">"</strong>, <strong>"<="</strong> e <strong>">="</strong> para criar criterios numericos. Ex: <strong>"<0,5"</strong> para valores menores que 50% ou <strong>">="&B1</strong> para referenciar uma celula.'
+  },
+
+  'S4': {
+    semana: 'Semana 4',
+    nome: 'SE + E + OU',
+    desc: 'Combinacao de funcoes logicas para criar classificacoes automaticas baseadas em multiplas condicoes.',
+    sintaxe: `<span class="fn">=SE</span>(<span class="arg">condicao</span>; <span class="str">"valor_se_verdadeiro"</span>; <span class="str">"valor_se_falso"</span>)\n\n<span class="fn">=SE</span>(<span class="fn">E</span>(<span class="arg">cond1</span>; <span class="arg">cond2</span>); <span class="str">"ambas verdadeiras"</span>; <span class="str">"alguma falsa"</span>)\n\n<span class="fn">=SE</span>(<span class="fn">OU</span>(<span class="arg">cond1</span>; <span class="arg">cond2</span>); <span class="str">"alguma verdadeira"</span>; <span class="str">"todas falsas"</span>)`,
+    parametros: [
+      { nome: 'SE', desc: 'Testa uma condicao e retorna um valor se verdadeira e outro se falsa.' },
+      { nome: 'E', desc: 'Retorna VERDADEIRO somente se TODAS as condicoes forem verdadeiras.' },
+      { nome: 'OU', desc: 'Retorna VERDADEIRO se PELO MENOS UMA das condicoes for verdadeira.' },
+    ],
+    exemploBasico: {
+      descricao: 'Classifica uma campanha como "Eficiente", "Atencao" ou "Critico" com base no CPL:',
+      formula: '=SE(A2<30;"Eficiente";SE(A2<=50;"Atencao";"Critico"))',
+      tabela: `<table class="sheets-table">
+        <tr><th>A — CPL</th><th>B — Classificacao</th></tr>
+        <tr><td>R$ 25</td><td class="formula-cell">=SE(A2&lt;30;"Eficiente";SE(A2&lt;=50;"Atencao";"Critico"))</td></tr>
+        <tr><td>R$ 42</td><td class="formula-cell">=SE(A3&lt;30;"Eficiente";SE(A3&lt;=50;"Atencao";"Critico"))</td></tr>
+        <tr><td>R$ 65</td><td class="formula-cell">=SE(A4&lt;30;"Eficiente";SE(A4&lt;=50;"Atencao";"Critico"))</td></tr>
+      </table>`,
+      resultado: '"Eficiente" / "Atencao" / "Critico" — classificacao automatica por faixa de CPL'
+    },
+    exemploCNA: {
+      descricao: 'Classifica o pacing de cada campanha do CNA como saudavel, atencao ou critico:',
+      formula: '=SE(E(B2>="45%";B2<="55%");"Saudavel";SE(OU(B2<"30%";B2>"80%");"Critico";"Atencao"))',
+      tabela: `<table class="sheets-table">
+        <tr><th>A — Campanha</th><th>B — Pacing</th><th>C — Status Pacing</th></tr>
+        <tr><td>Ingles Search</td><td>50%</td><td class="formula-cell">Saudavel</td></tr>
+        <tr><td>Kids Social</td><td>28%</td><td class="formula-cell">Critico</td></tr>
+        <tr><td>Institucional</td><td>62%</td><td class="formula-cell">Atencao</td></tr>
+      </table>`,
+      resultado: 'Cada campanha recebe uma classificacao automatica de pacing sem precisar analisar manualmente'
+    },
+    erros: [
+      { code: '#NOME?', desc: 'Funcao escrita errada. Verifique se e SE, E e OU (em portugues no Sheets).' },
+      { code: 'Resultado inesperado', desc: 'Verifique a ordem das condicoes — o SE testa da primeira para a ultima. A ordem importa.' },
+    ],
+    dica: 'Voce pode aninhar ate <strong>64 funcoes SE</strong>, mas mais de 3 fica dificil de ler. Para classificacoes complexas, prefira a funcao <strong>SES</strong> que testa multiplas condicoes de forma mais limpa.'
+  },
+
+  'S5': {
+    semana: 'Semana 5',
+    nome: 'PROCV / PROCX',
+    desc: 'Busca um valor em uma tabela e retorna um valor correspondente de outra coluna. PROCX e a versao moderna e mais flexivel do PROCV.',
+    sintaxe: `<span class="comment">// PROCV (classico)</span>\n<span class="fn">=PROCV</span>(<span class="arg">valor_procurado</span>; <span class="arg">intervalo_tabela</span>; <span class="num">numero_coluna</span>; <span class="num">0</span>)\n\n<span class="comment">// PROCX (moderno — recomendado)</span>\n<span class="fn">=PROCX</span>(<span class="arg">valor_procurado</span>; <span class="arg">intervalo_busca</span>; <span class="arg">intervalo_retorno</span>; <span class="str">"nao encontrado"</span>)`,
+    parametros: [
+      { nome: 'valor_procurado', desc: 'O valor que voce quer encontrar. Ex: nome da campanha ou plataforma.' },
+      { nome: 'intervalo_tabela', desc: 'A tabela onde buscar (PROCV). Deve comecar pela coluna de busca.' },
+      { nome: 'numero_coluna', desc: 'Qual coluna da tabela retornar (PROCV). 1 = primeira coluna, 2 = segunda, etc.' },
+      { nome: 'intervalo_busca', desc: 'Coluna onde procurar o valor (PROCX).' },
+      { nome: 'intervalo_retorno', desc: 'Coluna do valor a retornar (PROCX).' },
+    ],
+    exemploBasico: {
+      descricao: 'Busca o CPL de referencia de uma campanha em outra aba:',
+      formula: '=PROCX(A2; Metas!A:A; Metas!B:B; "Nao encontrado")',
+      tabela: `<table class="sheets-table">
+        <tr><th colspan="2">Aba: Dados</th><th colspan="2">Aba: Metas</th></tr>
+        <tr><th>A — Campanha</th><th>B — CPL Real</th><th>A — Campanha</th><th>B — CPL Meta</th></tr>
+        <tr><td>Ingles Search</td><td>R$ 42</td><td>Ingles Search</td><td>R$ 38</td></tr>
+        <tr><td>Kids Social</td><td>R$ 55</td><td>Kids Social</td><td>R$ 50</td></tr>
+        <tr><td class="formula-cell" colspan="4">=PROCX(A2; Metas!A:A; Metas!B:B; "Nao encontrado")</td></tr>
+      </table>`,
+      resultado: 'R$ 38 — traz o CPL meta do Ingles Search da aba Metas para comparar com o real'
+    },
+    exemploCNA: {
+      descricao: 'Compare o CPL real de cada campanha com a meta definida em outra aba:',
+      formula: '=PROCX(A2;Metas!A:A;Metas!B:B;"Sem meta")',
+      tabela: `<table class="sheets-table">
+        <tr><th>A — Campanha</th><th>B — CPL Real</th><th>C — CPL Meta</th><th>D — Status</th></tr>
+        <tr><td>Ingles Search</td><td>R$ 42</td><td class="formula-cell">R$ 38</td><td>Acima da meta</td></tr>
+        <tr><td>Kids Social</td><td>R$ 48</td><td class="formula-cell">R$ 50</td><td>Dentro da meta</td></tr>
+      </table>`,
+      resultado: 'Com PROCX voce cruza automaticamente o CPL real com a meta sem copiar dados manualmente'
+    },
+    erros: [
+      { code: '#N/A', desc: 'O valor nao foi encontrado. Use o 4o parametro do PROCX para definir o que mostrar quando nao encontrar: "Sem meta" ou 0.' },
+      { code: '#REF!', desc: 'O numero da coluna no PROCV e maior do que o intervalo da tabela. Verifique o numero_coluna.' },
+    ],
+    dica: '<strong>Prefira sempre o PROCX</strong> ao PROCV. O PROCX e mais flexivel, funciona em qualquer direcao e nao quebra quando voce insere colunas no meio da tabela — o que e comum no dia a dia.'
+  },
+
+  'S6': {
+    semana: 'Semana 6',
+    nome: 'QUERY basico',
+    desc: 'Filtra, ordena e agrupa dados usando uma linguagem parecida com SQL. Substitui tabelas dinamicas com mais flexibilidade e controle.',
+    sintaxe: `<span class="fn">=QUERY</span>(<span class="arg">dados</span>; <span class="str">"SELECT A, B, C WHERE A = 'valor' ORDER BY B DESC"</span>; <span class="num">1</span>)`,
+    parametros: [
+      { nome: 'dados', desc: 'O intervalo de dados. Ex: A1:F100 ou a aba inteira.' },
+      { nome: 'query', desc: 'A consulta em texto — parecida com SQL. Sempre entre aspas duplas.' },
+      { nome: '1', desc: 'Numero de linhas de cabecalho. Use 1 se tiver cabecalho, 0 se nao tiver.' },
+    ],
+    exemploBasico: {
+      descricao: 'Filtra apenas as campanhas do Google e ordena pelo menor CPL:',
+      formula: '=QUERY(A1:D100; "SELECT A,B,C,D WHERE B = \'Google\' ORDER BY D ASC"; 1)',
+      tabela: `<table class="sheets-table">
+        <tr><th>A — Campanha</th><th>B — Plataforma</th><th>C — Leads</th><th>D — CPL</th></tr>
+        <tr><td>Ingles Search</td><td>Google</td><td>120</td><td>R$ 38</td></tr>
+        <tr><td>Ingles Social</td><td>Meta</td><td>95</td><td>R$ 42</td></tr>
+        <tr><td>Kids Search</td><td>Google</td><td>72</td><td>R$ 55</td></tr>
+        <tr><td class="formula-cell" colspan="4">=QUERY(A1:D4;"SELECT * WHERE B='Google' ORDER BY D ASC";1)</td></tr>
+      </table>`,
+      resultado: 'Retorna apenas Ingles Search e Kids Search (Google), ordenados pelo CPL do menor para o maior'
+    },
+    exemploCNA: {
+      descricao: 'Filtra todas as campanhas do CNA com CPL acima de R$50 e exibe ordenado por CPL:',
+      formula: '=QUERY(Dados!A1:F100; "SELECT A,B,C,D,E WHERE E > 50 ORDER BY E DESC"; 1)',
+      tabela: `<table class="sheets-table">
+        <tr><th>A</th><th>B — Plataforma</th><th>C — Campanha</th><th>D — Leads</th><th>E — CPL</th></tr>
+        <tr><td>1</td><td>Meta</td><td>Pro Turbo</td><td>25</td><td>R$ 68</td></tr>
+        <tr><td>2</td><td>Google</td><td>Kids Search</td><td>72</td><td>R$ 55</td></tr>
+        <tr><td class="formula-cell" colspan="5">=QUERY(Dados!A1:E100;"SELECT B,C,D,E WHERE E>50 ORDER BY E DESC";1)</td></tr>
+      </table>`,
+      resultado: 'Lista automatica de campanhas com CPL critico, do pior para o melhor — sem filtrar manualmente'
+    },
+    erros: [
+      { code: '#VALOR!', desc: 'A sintaxe da query esta errada. Verifique aspas simples para textos dentro da query e aspas duplas na formula.' },
+      { code: 'Colunas erradas', desc: 'As colunas na QUERY sao A, B, C... referentes ao intervalo — nao ao Sheets inteiro. A = primeira coluna do intervalo.' },
+    ],
+    dica: 'Use <strong>SELECT *</strong> para trazer todas as colunas. Use <strong>SELECT A, C, E</strong> para trazer apenas as colunas que precisar — na ordem que quiser. <strong>Nao use tabela dinamica</strong> — QUERY faz tudo que ela faz com muito mais flexibilidade.'
+  },
+
+  'S7': {
+    semana: 'Semana 7',
+    nome: 'QUERY intermediario',
+    desc: 'Agrupa dados por categoria e calcula totais e medias automaticamente. Substitui o agrupamento manual por plataforma ou campanha.',
+    sintaxe: `<span class="fn">=QUERY</span>(<span class="arg">dados</span>; <span class="str">"SELECT A, SUM(B), AVG(C) GROUP BY A ORDER BY SUM(B) DESC"</span>; <span class="num">1</span>)`,
+    parametros: [
+      { nome: 'SUM(col)', desc: 'Soma todos os valores de uma coluna dentro do grupo.' },
+      { nome: 'AVG(col)', desc: 'Calcula a media dos valores de uma coluna dentro do grupo.' },
+      { nome: 'COUNT(col)', desc: 'Conta o numero de registros dentro do grupo.' },
+      { nome: 'GROUP BY col', desc: 'Define a coluna de agrupamento — similar ao agrupar por na tabela dinamica.' },
+    ],
+    exemploBasico: {
+      descricao: 'Agrupa o investimento total e o CPL medio por plataforma:',
+      formula: '=QUERY(A1:D100; "SELECT A, SUM(C), AVG(D) GROUP BY A"; 1)',
+      tabela: `<table class="sheets-table">
+        <tr><th>A — Plataforma</th><th>C — Investimento</th><th>D — CPL</th></tr>
+        <tr><td>Google</td><td>R$ 4.500</td><td>R$ 38</td></tr>
+        <tr><td>Meta</td><td>R$ 3.200</td><td>R$ 42</td></tr>
+        <tr><td>Google</td><td>R$ 2.800</td><td>R$ 55</td></tr>
+        <tr><td>TikTok</td><td>R$ 1.100</td><td>R$ 72</td></tr>
+        <tr><td class="formula-cell" colspan="3">=QUERY(A1:D4;"SELECT A, SUM(C), AVG(D) GROUP BY A";1)</td></tr>
+      </table>`,
+      resultado: 'Tabela consolidada: Google (R$7.300 / CPL medio R$46), Meta (R$3.200 / R$42), TikTok (R$1.100 / R$72)'
+    },
+    exemploCNA: {
+      descricao: 'Consolida investimento total e CPL medio por plataforma para o mes de Abril no CNA:',
+      formula: '=QUERY(Dados!A1:E100; "SELECT B, SUM(D), AVG(E) WHERE C = \'Abril\' GROUP BY B ORDER BY SUM(D) DESC"; 1)',
+      tabela: `<table class="sheets-table">
+        <tr><th>B — Plataforma</th><th>SUM D — Invest.</th><th>AVG E — CPL Medio</th></tr>
+        <tr><td class="formula-cell">Google</td><td class="formula-cell">R$ 68.061</td><td class="formula-cell">R$ 37,60</td></tr>
+        <tr><td class="formula-cell">Meta</td><td class="formula-cell">R$ 34.030</td><td class="formula-cell">R$ 36,13</td></tr>
+        <tr><td class="formula-cell">TikTok</td><td class="formula-cell">R$ 8.500</td><td class="formula-cell">R$ 65,38</td></tr>
+      </table>`,
+      resultado: 'Visao consolidada de toda a operacao CNA em Abril — por plataforma, automaticamente'
+    },
+    erros: [
+      { code: '#VALOR!', desc: 'Voce usou SUM ou AVG em uma coluna de texto. SUM e AVG funcionam apenas em colunas numericas.' },
+      { code: 'Coluna faltando no GROUP BY', desc: 'Toda coluna no SELECT que nao for uma agregacao (SUM, AVG, COUNT) precisa estar no GROUP BY.' },
+    ],
+    dica: 'Combine <strong>WHERE</strong> com <strong>GROUP BY</strong> para filtrar e agrupar ao mesmo tempo. Ex: filtre apenas Abril e depois agrupe por plataforma. A ordem e sempre: SELECT → WHERE → GROUP BY → ORDER BY.'
+  },
+
+  'S8': {
+    semana: 'Semana 8',
+    nome: 'QUERY avancado + IMPORTRANGE',
+    desc: 'IMPORTRANGE traz dados de outra planilha. Combinado com QUERY voce filtra, agrupa e consolida dados de multiplas fontes automaticamente.',
+    sintaxe: `<span class="comment">// IMPORTRANGE — traz dados de outra planilha</span>\n<span class="fn">=IMPORTRANGE</span>(<span class="str">"url_da_planilha"</span>; <span class="str">"Aba!A1:F100"</span>)\n\n<span class="comment">// QUERY sobre IMPORTRANGE</span>\n<span class="fn">=QUERY</span>(<span class="fn">IMPORTRANGE</span>(<span class="str">"url"</span>; <span class="str">"Aba!A:F"</span>); <span class="str">"SELECT Col1, SUM(Col3) GROUP BY Col1"</span>; <span class="num">1</span>)`,
+    parametros: [
+      { nome: 'url_da_planilha', desc: 'O link completo da planilha de origem. Cole a URL entre aspas.' },
+      { nome: 'Aba!A1:F100', desc: 'O nome da aba e o intervalo de celulas a importar.' },
+      { nome: 'Col1, Col2...', desc: 'Dentro do QUERY sobre IMPORTRANGE, use Col1, Col2, Col3... (nao A, B, C).' },
+    ],
+    exemploBasico: {
+      descricao: 'Importa dados de outra planilha e filtra apenas o Google:',
+      formula: '=QUERY(IMPORTRANGE("https://docs.google.com/..."; "Dados!A:E"); "SELECT Col1, Col2, Col3 WHERE Col2 = \'Google\'"; 1)',
+      tabela: `<table class="sheets-table">
+        <tr><th colspan="3">Planilha de origem (outra URL)</th></tr>
+        <tr><th>Col1 — Campanha</th><th>Col2 — Plataforma</th><th>Col3 — Invest.</th></tr>
+        <tr><td>Ingles Search</td><td>Google</td><td>R$ 4.500</td></tr>
+        <tr><td>Ingles Social</td><td>Meta</td><td>R$ 3.200</td></tr>
+        <tr><td class="formula-cell" colspan="3">QUERY filtra apenas Google da planilha importada</td></tr>
+      </table>`,
+      resultado: 'Traz automaticamente os dados do Google de outra planilha sem copiar e colar'
+    },
+    exemploCNA: {
+      descricao: 'Traz o investimento de cada plataforma da planilha de controle e agrupa para o dashboard:',
+      formula: '=QUERY(IMPORTRANGE("url_planilha_controle"; "Investimento!A:F"); "SELECT Col2, SUM(Col4) GROUP BY Col2 ORDER BY SUM(Col4) DESC"; 1)',
+      tabela: `<table class="sheets-table">
+        <tr><th>Col2 — Plataforma</th><th>SUM Col4 — Total Invest.</th></tr>
+        <tr><td class="formula-cell">Google</td><td class="formula-cell">R$ 68.061</td></tr>
+        <tr><td class="formula-cell">Meta</td><td class="formula-cell">R$ 34.030</td></tr>
+        <tr><td class="formula-cell">TikTok</td><td class="formula-cell">R$ 8.500</td></tr>
+      </table>`,
+      resultado: 'Dashboard atualizado automaticamente sempre que a planilha de controle for alterada'
+    },
+    erros: [
+      { code: '#REF!', desc: 'O acesso a planilha de origem nao foi autorizado. Clique em "Autorizar acesso" que aparece na celula.' },
+      { code: 'Col1 ao inves de A', desc: 'Dentro de QUERY sobre IMPORTRANGE use Col1, Col2... e nao A, B, C — essa e a diferenca principal.' },
+    ],
+    dica: 'Na primeira vez que usar IMPORTRANGE em uma planilha nova o Sheets pede autorizacao — clique em <strong>"Autorizar acesso"</strong>. Apos autorizar, nunca mais precisara fazer isso para aquela combinacao de planilhas.'
+  },
+
+  'S9': {
+    semana: 'Semana 9',
+    nome: 'IFERROR / SEERRO',
+    desc: 'Captura erros em formulas e substitui por um valor customizado. Essencial para deixar dashboards limpos e profissionais.',
+    sintaxe: `<span class="comment">// SEERRO (portugues)</span>\n<span class="fn">=SEERRO</span>(<span class="arg">formula</span>; <span class="str">"valor_se_erro"</span>)\n\n<span class="comment">// IFERROR (ingles — funciona nos dois)</span>\n<span class="fn">=IFERROR</span>(<span class="arg">formula</span>; <span class="str">"valor_se_erro"</span>)`,
+    parametros: [
+      { nome: 'formula', desc: 'Qualquer formula que pode gerar erro. Ex: PROCX, QUERY, divisao.' },
+      { nome: 'valor_se_erro', desc: 'O que mostrar quando der erro. Pode ser texto, numero ou outra formula.' },
+    ],
+    exemploBasico: {
+      descricao: 'Evita que o #N/A apareca quando o PROCX nao encontrar o valor:',
+      formula: '=SEERRO(PROCX(A2; Metas!A:A; Metas!B:B); "Sem meta")',
+      tabela: `<table class="sheets-table">
+        <tr><th>A — Campanha</th><th>B — Meta CPL</th></tr>
+        <tr><td>Ingles Search</td><td class="formula-cell">R$ 38</td></tr>
+        <tr><td>Nova Campanha</td><td class="formula-cell">Sem meta</td></tr>
+      </table>`,
+      resultado: 'Ao inves de #N/A, mostra "Sem meta" — muito mais limpo e profissional'
+    },
+    exemploCNA: {
+      descricao: 'Trata divisao por zero no calculo do CPL e erros no PROCX de metas:',
+      formula: '=SEERRO(D2/E2; 0)',
+      tabela: `<table class="sheets-table">
+        <tr><th>D — Investimento</th><th>E — Leads</th><th>F — CPL</th></tr>
+        <tr><td>R$ 4.500</td><td>120</td><td class="formula-cell">R$ 37,50</td></tr>
+        <tr><td>R$ 800</td><td>0</td><td class="formula-cell">0</td></tr>
+      </table>`,
+      resultado: 'Quando nao ha leads (divisao por zero), mostra 0 ao inves de #DIV/0!'
+    },
+    erros: [
+      { code: 'Erro escondido', desc: 'Cuidado: SEERRO pode esconder erros reais na sua formula. Use durante o desenvolvimento para verificar se a formula esta certa antes de adicionar o SEERRO.' },
+    ],
+    dica: 'Use <strong>""</strong> (vazio) para deixar a celula em branco quando der erro, <strong>0</strong> para calculos numericos ou <strong>"—"</strong> para indicar dado indisponivel. Escolha conforme o contexto do dashboard.'
+  },
+
+  'S10': {
+    semana: 'Semana 10',
+    nome: 'Graficos Dinamicos',
+    desc: 'Crie graficos que se atualizam automaticamente conforme os dados mudam — sem precisar recriar ou ajustar manualmente.',
+    sintaxe: `<span class="comment">// Graficos sao criados pela interface — nao por formula</span>\n<span class="comment">// Mas os dados que alimentam o grafico podem ser formulas QUERY</span>\n\n<span class="fn">=QUERY</span>(<span class="arg">dados</span>; <span class="str">"SELECT A, SUM(B) GROUP BY A"</span>; <span class="num">1</span>)\n<span class="comment">// → Grafico de pizza por plataforma atualiza automaticamente</span>`,
+    parametros: [
+      { nome: 'Grafico de linha', desc: 'Ideal para series historicas — evolucao do CPL ao longo das semanas.' },
+      { nome: 'Grafico de pizza', desc: 'Ideal para distribuicao — share de investimento por plataforma.' },
+      { nome: 'Grafico de barras', desc: 'Ideal para comparacao — CPL por campanha lado a lado.' },
+    ],
+    exemploBasico: {
+      descricao: 'Como criar um grafico dinamico de pizza com distribuicao de investimento:',
+      formula: '1. Monte a tabela com QUERY\n2. Selecione a tabela\n3. Inserir → Grafico → Grafico de pizza',
+      tabela: `<table class="sheets-table">
+        <tr><th>Plataforma</th><th>Investimento Total</th></tr>
+        <tr><td>Google</td><td>R$ 68.061</td></tr>
+        <tr><td>Meta</td><td>R$ 34.030</td></tr>
+        <tr><td>TikTok</td><td>R$ 8.500</td></tr>
+        <tr><td>Outros</td><td>R$ 5.200</td></tr>
+      </table>`,
+      resultado: 'Grafico de pizza que se atualiza automaticamente quando os dados mudam'
+    },
+    exemploCNA: {
+      descricao: 'Grafico de linha mostrando a evolucao semanal do CPL do CNA:',
+      formula: '=QUERY(Dados!A:E; "SELECT A, AVG(E) GROUP BY A ORDER BY A"; 1)',
+      tabela: `<table class="sheets-table">
+        <tr><th>Semana</th><th>CPL Medio</th></tr>
+        <tr><td>Semana 1</td><td>R$ 42</td></tr>
+        <tr><td>Semana 2</td><td>R$ 38</td></tr>
+        <tr><td>Semana 3</td><td>R$ 45</td></tr>
+        <tr><td>Semana 4</td><td>R$ 36</td></tr>
+      </table>`,
+      resultado: 'Grafico de linha que mostra a tendencia do CPL semana a semana — identifica anomalias visualmente'
+    },
+    erros: [
+      { code: 'Grafico nao atualiza', desc: 'Certifique-se que o grafico esta referenciando o intervalo correto da tabela de dados.' },
+      { code: 'Dados misturados', desc: 'Nao deixe linhas em branco entre os dados — o Sheets pode interpretar como fim da tabela.' },
+    ],
+    dica: 'Alimente sempre o grafico com uma tabela criada por QUERY — assim quando os dados brutos mudarem, a QUERY atualiza a tabela e o grafico atualiza automaticamente. <strong>Zero trabalho manual.</strong>'
+  },
+
+  'S11': {
+    semana: 'Semana 11',
+    nome: 'Dashboard Completo',
+    desc: 'Consolidacao de todas as formulas aprendidas em um dashboard funcional que monitora a operacao do CNA automaticamente.',
+    sintaxe: `<span class="comment">// Um dashboard completo combina:</span>\n<span class="fn">IMPORTRANGE</span> <span class="comment">→ traz dados de outras planilhas</span>\n<span class="fn">QUERY</span>       <span class="comment">→ filtra e agrupa</span>\n<span class="fn">SOMASES</span>     <span class="comment">→ calcula totais por criterio</span>\n<span class="fn">SEERRO</span>      <span class="comment">→ trata erros</span>\n<span class="fn">PROCX</span>       <span class="comment">→ cruza com metas</span>\n<span class="comment">Graficos    → visualiza tudo</span>`,
+    parametros: [
+      { nome: 'Secao de Pacing', desc: 'Budget total, gasto ate hoje, percentual entregue vs esperado. Usa SOMASES + SE.' },
+      { nome: 'Secao de CPL', desc: 'CPL real vs meta por campanha. Usa PROCX + SEERRO + formatacao condicional.' },
+      { nome: 'Secao de Leads', desc: 'Total de leads no mes vs meta. Usa SOMASES + variacao percentual.' },
+      { nome: 'Visao por Plataforma', desc: 'Investimento e CPL medio agrupados. Usa QUERY com GROUP BY.' },
+    ],
+    exemploBasico: {
+      descricao: 'Estrutura basica de um dashboard de pacing:',
+      formula: '=SEERRO(SOMASES(Dados!D:D; Dados!B:B; "Google") / Meta_Google; 0)',
+      tabela: `<table class="sheets-table">
+        <tr><th colspan="2">Dashboard CNA — Abril</th></tr>
+        <tr><th>Indicador</th><th>Valor</th></tr>
+        <tr><td>Budget Total</td><td>R$ 378.115</td></tr>
+        <tr><td>Investido ate hoje</td><td class="formula-cell">=SOMASES(...)</td></tr>
+        <tr><td>Pacing (%)</td><td class="formula-cell">=Investido/Budget</td></tr>
+        <tr><td>Pacing Esperado</td><td class="formula-cell">=Dia_Atual/30</td></tr>
+        <tr><td>Status</td><td class="formula-cell">=SE(Pacing>Esperado+0,1;"Acima";"OK")</td></tr>
+      </table>`,
+      resultado: 'Visao instantanea do pacing sem precisar calcular nada manualmente'
+    },
+    exemploCNA: {
+      descricao: 'Dashboard completo do CNA com todas as formulas integradas:',
+      formula: 'Combine IMPORTRANGE + QUERY + SOMASES + PROCX + SEERRO + Graficos',
+      tabela: `<table class="sheets-table">
+        <tr><th>Secao</th><th>Formula principal</th><th>O que mostra</th></tr>
+        <tr><td>Pacing Geral</td><td>SOMASES</td><td>Budget entregue vs esperado</td></tr>
+        <tr><td>CPL por Plataforma</td><td>QUERY GROUP BY</td><td>CPL medio de cada canal</td></tr>
+        <tr><td>Meta vs Real</td><td>PROCX + SEERRO</td><td>Distancia da meta por campanha</td></tr>
+        <tr><td>Leads no Mes</td><td>SOMASES + variacao</td><td>Total vs meta mensal</td></tr>
+        <tr><td>Grafico de Linha</td><td>QUERY semanal</td><td>Tendencia do CPL</td></tr>
+      </table>`,
+      resultado: 'Um dashboard que voce abre todo dia e em 2 minutos sabe se a operacao CNA esta saudavel'
+    },
+    erros: [
+      { code: 'Dashboard lento', desc: 'Muitos IMPORTRANGE na mesma planilha deixam o Sheets lento. Consolide os dados em uma unica aba de importacao.' },
+      { code: 'Dados desatualizados', desc: 'Se os dados nao atualizam, pressione Ctrl+Shift+F9 para forcar o recalculo de todas as formulas.' },
+    ],
+    dica: 'Estruture o dashboard em <strong>3 camadas</strong>: 1) Aba de dados brutos (IMPORTRANGE), 2) Aba de processamento (QUERY + SOMASES), 3) Aba de visualizacao (graficos + indicadores). Assim fica organizado e facil de manter.'
+  },
+
+  'S12': {
+    semana: 'Semana 12',
+    nome: 'Apresentacao Final',
+    desc: 'Como usar o Sheets para preparar dados para apresentacoes — exportar, visualizar e comunicar resultados de forma clara e profissional.',
+    sintaxe: `<span class="comment">// Nao ha formula nova na Semana 12</span>\n<span class="comment">// O foco e aplicar tudo aprendido em uma apresentacao real</span>\n\n<span class="comment">// Checklist de formulas usadas na apresentacao:</span>\n<span class="fn">SOMASES</span>   <span class="comment">→ totais por periodo/plataforma</span>\n<span class="fn">QUERY</span>     <span class="comment">→ consolidacao por canal</span>\n<span class="fn">PROCX</span>     <span class="comment">→ comparacao com metas</span>\n<span class="fn">Variacao%</span> <span class="comment">→ evolucao vs periodo anterior</span>\n<span class="fn">SEERRO</span>    <span class="comment">→ dados sempre limpos</span>`,
+    parametros: [
+      { nome: 'Slide 1 — Resultado', desc: 'Use SOMASES para os totais do mes: investimento, leads, CPL medio.' },
+      { nome: 'Slide 2 — Destaques', desc: 'Use QUERY para identificar as campanhas que mais performaram.' },
+      { nome: 'Slide 3 — Atencao', desc: 'Use variacao % e formatacao condicional para evidenciar o que regrediu.' },
+      { nome: 'Slide 4 e 5', desc: 'Use os graficos do dashboard para visualizar tendencias e proximos passos.' },
+    ],
+    exemploBasico: {
+      descricao: 'Como extrair os numeros certos para cada slide da apresentacao:',
+      formula: '=SOMASES(D:D; B:B; "Google"; C:C; "Abril")',
+      tabela: `<table class="sheets-table">
+        <tr><th>Slide</th><th>Metrica</th><th>Formula no Sheets</th></tr>
+        <tr><td>1</td><td>Investimento total</td><td>=SOMASES(D:D;C:C;"Abril")</td></tr>
+        <tr><td>1</td><td>Total de leads</td><td>=SOMASES(E:E;C:C;"Abril")</td></tr>
+        <tr><td>1</td><td>CPL medio</td><td>=Investimento/Leads</td></tr>
+        <tr><td>2</td><td>Melhor campanha</td><td>=QUERY(...;"ORDER BY CPL ASC LIMIT 1")</td></tr>
+        <tr><td>3</td><td>Variacao vs mes ant.</td><td>=(CPL_Atual-CPL_Ant)/CPL_Ant</td></tr>
+      </table>`,
+      resultado: 'Todos os numeros prontos para copiar para o Google Slides — sem calculo manual'
+    },
+    exemploCNA: {
+      descricao: 'Preparacao dos dados para a apresentacao mensal do CNA:',
+      formula: 'Dashboard → copia os numeros → cola no Slides como valores',
+      tabela: `<table class="sheets-table">
+        <tr><th>O que apresentar</th><th>De onde tirar</th></tr>
+        <tr><td>Resultado do mes</td><td>Aba de dashboard — secao de totais</td></tr>
+        <tr><td>CPL por plataforma</td><td>QUERY com GROUP BY plataforma</td></tr>
+        <tr><td>Variacao vs mes anterior</td><td>Coluna de variacao % formatada</td></tr>
+        <tr><td>Grafico de tendencia</td><td>Grafico de linha do dashboard</td></tr>
+        <tr><td>Proximas acoes</td><td>Sua analise — nao tem formula para isso</td></tr>
+      </table>`,
+      resultado: 'Apresentacao pronta em minutos — os dados ja estao calculados no dashboard'
+    },
+    erros: [
+      { code: 'Numero errado no slide', desc: 'Sempre cole como "Colar somente valores" (Ctrl+Shift+V) no Slides — nunca cole com formulas, pois elas nao funcionam fora do Sheets.' },
+    ],
+    dica: 'O Sheets e a sua fonte da verdade. O Slides e apenas a vitrine. <strong>Nunca calcule nada no Slides</strong> — calcule no Sheets, extraia o numero e apresente. Assim voce garante que os numeros estao corretos e rastreados.'
+  }
+};
+
+// ── RENDER ────────────────────────────────
+const params  = new URLSearchParams(window.location.search);
+let   current = params.get('s') || 'S1';
+
+function renderNav() {
+  const list = document.getElementById('formulaNavList');
+  list.innerHTML = '';
+  Object.entries(FORMULAS).forEach(([key, f]) => {
+    const a = document.createElement('a');
+    a.className = 'formula-nav-item' + (key === current ? ' active' : '');
+    a.href = `formula.html?s=${key}`;
+    a.innerHTML = `
+      <span class="formula-nav-semana">${key}</span>
+      <span class="formula-nav-nome">${f.nome}</span>`;
+    list.appendChild(a);
+  });
+}
+
+function renderHero(f) {
+  document.getElementById('heroSemana').textContent = f.semana;
+  document.getElementById('heroNome').innerHTML     = `<span>${f.nome}</span>`;
+  document.getElementById('heroDesc').textContent   = f.desc;
+  document.title = `CNAcademy — ${f.nome}`;
+  document.getElementById('navSub').textContent     = f.semana;
+}
+
+function renderContent(f) {
+  const c = document.getElementById('formulaContent');
+  c.innerHTML = `
+
+    <!-- Sintaxe -->
+    <div class="bloco">
+      <div class="bloco-titulo">📝 Sintaxe</div>
+      <div class="sintaxe-box">${f.sintaxe}</div>
+      <ul class="param-list">
+        ${f.parametros.map(p => `
+          <li class="param-item">
+            <span class="param-nome">${p.nome}</span>
+            <span class="param-desc">${p.desc}</span>
+          </li>`).join('')}
+      </ul>
+    </div>
+
+    <!-- Exemplos -->
+    <div class="bloco">
+      <div class="bloco-titulo">💡 Exemplos</div>
+      <div class="exemplo-tab">
+        <button class="ex-tab-btn active"
+          onclick="switchTab('basico', this)">
+          Exemplo basico
+        </button>
+        <button class="ex-tab-btn"
+          onclick="switchTab('cna', this)">
+          Aplicado ao CNA
+        </button>
+      </div>
+
+      <!-- Basico -->
+      <div class="ex-content active" id="ex-basico">
+        <p style="font-size:13px;color:var(--gs500);
+          margin-bottom:12px;line-height:1.6;">
+          ${f.exemploBasico.descricao}
+        </p>
+        <div class="sintaxe-box" style="font-size:13px;">
+          ${f.exemploBasico.formula}
+        </div>
+        ${f.exemploBasico.tabela}
+        <div class="resultado-box">
+          <span style="font-size:18px;">✅</span>
+          <span><strong>Resultado:</strong> ${f.exemploBasico.resultado}</span>
+        </div>
+      </div>
+
+      <!-- CNA -->
+      <div class="ex-content" id="ex-cna">
+        <p style="font-size:13px;color:var(--gs500);
+          margin-bottom:12px;line-height:1.6;">
+          ${f.exemploCNA.descricao}
+        </p>
+        <div class="sintaxe-box" style="font-size:13px;">
+          ${f.exemploCNA.formula}
+        </div>
+        ${f.exemploCNA.tabela}
+        <div class="resultado-box">
+          <span style="font-size:18px;">✅</span>
+          <span><strong>Resultado:</strong> ${f.exemploCNA.resultado}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Erros comuns -->
+    <div class="bloco">
+      <div class="bloco-titulo">⚠️ Erros Comuns</div>
+      ${f.erros.map(e => `
+        <div class="erro-item">
+          <span class="erro-code">${e.code}</span>
+          <span class="erro-desc">${e.desc}</span>
+        </div>`).join('')}
+    </div>
+
+    <!-- Dica -->
+    <div class="bloco">
+      <div class="bloco-titulo">🌟 Dica do Joel</div>
+      <div class="dica-box">
+        <div class="dica-icon">💡</div>
+        <div class="dica-text">${f.dica}</div>
+      </div>
+    </div>
+
+    <!-- Navegacao entre formulas -->
+    <div style="display:flex;justify-content:space-between;
+      gap:12px;margin-top:8px;flex-wrap:wrap;">
+      ${getPrev(current) ? `
+        <a href="formula.html?s=${getPrev(current)}"
+          class="btn btn-sec"
+          style="text-decoration:none;">
+          ← ${FORMULAS[getPrev(current)].nome}
+        </a>` : '<div></div>'}
+      ${getNext(current) ? `
+        <a href="formula.html?s=${getNext(current)}"
+          class="btn btn-grad"
+          style="text-decoration:none;">
+          ${FORMULAS[getNext(current)].nome} →
+        </a>` : '<div></div>'}
+    </div>`;
+}
+
+// Switch de abas
+window.switchTab = (tab, btn) => {
+  document.querySelectorAll('.ex-tab-btn')
+    .forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.ex-content')
+    .forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('ex-' + tab).classList.add('active');
+};
+
+// Prev/Next
+const keys = Object.keys(FORMULAS);
+function getPrev(k){ const i=keys.indexOf(k); return i>0?keys[i-1]:null; }
+function getNext(k){ const i=keys.indexOf(k); return i<keys.length-1?keys[i+1]:null; }
+
+// Init
+const f = FORMULAS[current];
+if (f) {
+  renderHero(f);
+  renderNav();
+  renderContent(f);
+} else {
+  window.location.href = 'formula.html?s=S1';
+}
+</script>
+</body>
+</html>
