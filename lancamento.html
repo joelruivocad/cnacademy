@@ -5,12 +5,11 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>😇</text></svg>"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
-<title>CNAcademy — Comeca Hoje!</title>
+<title>CNAcademy — Começa Hoje!</title>
 <style>
 :root{
   --purple:#7C5CCC;--purple-bg:#EDE7FF;--purple-light:#D4C5FF;
   --brand:#FC4807;--brand-light:#FDE9E6;
-  --sky1:#C9E8FF;--sky2:#E8F4FF;--sky3:#F0F6FF;
   --gold:#F5C842;--gold-dark:#C49A00;
   --white:#fff;--gs400:#9A9A9A;--gs500:#5E5E5E;--gs900:#1E1E1E;
   --fp:'Inter',system-ui,sans-serif;
@@ -28,32 +27,54 @@ body{
   position:relative;
 }
 
-/* ── STARS ── */
-.stars-bg{position:fixed;inset:0;pointer-events:none;z-index:0;}
-
-/* ── SHOOTING STARS ── */
-.shooting-star{
+/* STARS */
+#starsBg{
   position:fixed;
-  width:3px;height:3px;
-  background:var(--white);
-  border-radius:50%;
+  top:0;left:0;
+  width:100vw;
+  height:100vh;
   pointer-events:none;
-  z-index:1;
-}
-.shooting-star::after{
-  content:'';
-  position:absolute;
-  top:50%;left:50%;
-  transform:translate(-50%,-50%);
-  width:120px;height:1px;
-  background:linear-gradient(90deg,rgba(255,255,255,.8),transparent);
-  transform-origin:right center;
+  z-index:0;
+  overflow:visible;
 }
 
-/* ── CLOUDS ── */
-.clouds{position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden;}
-.cl{position:absolute;background:rgba(255,255,255,.06);border-radius:50px;filter:blur(4px);animation:drift linear infinite;}
-.cl::before,.cl::after{content:'';position:absolute;background:inherit;border-radius:50%;}
+/* AURORA */
+.aurora{
+  position:fixed;
+  top:0;left:0;
+  width:100vw;height:100vh;
+  pointer-events:none;
+  z-index:0;
+  background:
+    radial-gradient(ellipse 70% 50% at 15% 85%,rgba(124,92,204,.30) 0%,transparent 60%),
+    radial-gradient(ellipse 60% 45% at 85% 15%,rgba(252,72,7,.18) 0%,transparent 55%),
+    radial-gradient(ellipse 80% 40% at 50% 100%,rgba(124,92,204,.22) 0%,transparent 50%),
+    radial-gradient(ellipse 50% 35% at 30% 50%,rgba(100,50,200,.12) 0%,transparent 50%),
+    radial-gradient(ellipse 40% 30% at 70% 60%,rgba(252,72,7,.10) 0%,transparent 45%);
+  animation:aurora 8s ease-in-out infinite alternate;
+}
+@keyframes aurora{
+  from{opacity:.6;}
+  to{opacity:1;}
+}
+
+/* CLOUDS */
+.clouds{
+  position:fixed;inset:0;
+  pointer-events:none;z-index:1;
+  overflow:hidden;
+}
+.cl{
+  position:absolute;
+  background:rgba(255,255,255,.06);
+  border-radius:50px;
+  filter:blur(4px);
+  animation:drift linear infinite;
+}
+.cl::before,.cl::after{
+  content:'';position:absolute;
+  background:inherit;border-radius:50%;
+}
 .cl1{width:200px;height:60px;top:15%;left:-220px;animation-duration:55s;}
 .cl1::before{width:100px;height:88px;top:-32px;left:22px;}
 .cl1::after{width:78px;height:70px;top:-24px;left:82px;}
@@ -62,47 +83,37 @@ body{
 .cl2::after{width:98px;height:88px;top:-30px;left:120px;}
 .cl3{width:160px;height:50px;top:65%;left:-185px;animation-duration:62s;animation-delay:6s;opacity:.5;}
 .cl3::before{width:82px;height:70px;top:-25px;left:15px;}
-.cl4{width:240px;height:70px;top:80%;left:-275px;animation-duration:80s;animation-delay:30s;opacity:.4;}
+.cl4{width:240px;height:70px;top:82%;left:-275px;animation-duration:80s;animation-delay:30s;opacity:.4;}
 .cl4::before{width:115px;height:100px;top:-36px;left:28px;}
 .cl4::after{width:88px;height:80px;top:-28px;left:110px;}
-@keyframes drift{from{transform:translateX(0);}to{transform:translateX(calc(100vw + 350px));}}
-
-/* ── AURORA ── */
-.aurora{
-  position:fixed;inset:0;pointer-events:none;z-index:0;
-  background:
-    radial-gradient(ellipse 80% 40% at 20% 80%,rgba(124,92,204,.25) 0%,transparent 60%),
-    radial-gradient(ellipse 60% 35% at 80% 20%,rgba(252,72,7,.15) 0%,transparent 55%),
-    radial-gradient(ellipse 70% 30% at 50% 100%,rgba(124,92,204,.2) 0%,transparent 50%);
-  animation:aurora 8s ease-in-out infinite alternate;
-}
-@keyframes aurora{
-  from{opacity:.6;transform:scale(1);}
-  to{opacity:1;transform:scale(1.05);}
+@keyframes drift{
+  from{transform:translateX(0);}
+  to{transform:translateX(calc(100vw + 350px));}
 }
 
-/* ── MOON ── */
+/* MOON */
 .moon{
   position:fixed;
   top:60px;right:80px;
   width:80px;height:80px;
   border-radius:50%;
   background:radial-gradient(circle at 35% 35%,#FFF8E1,#F5C842 40%,#C49A00 80%);
-  box-shadow:0 0 40px rgba(245,200,66,.4),0 0 80px rgba(245,200,66,.2),0 0 120px rgba(245,200,66,.1);
+  box-shadow:
+    0 0 40px rgba(245,200,66,.4),
+    0 0 80px rgba(245,200,66,.2),
+    0 0 120px rgba(245,200,66,.1);
   animation:moonGlow 4s ease-in-out infinite alternate;
   z-index:2;
 }
 .moon::before{
-  content:'';
-  position:absolute;
+  content:'';position:absolute;
   top:15px;left:20px;
   width:18px;height:18px;
   border-radius:50%;
   background:rgba(196,154,0,.3);
 }
 .moon::after{
-  content:'';
-  position:absolute;
+  content:'';position:absolute;
   top:35px;left:45px;
   width:12px;height:12px;
   border-radius:50%;
@@ -113,7 +124,21 @@ body{
   to{box-shadow:0 0 60px rgba(245,200,66,.6),0 0 120px rgba(245,200,66,.3),0 0 160px rgba(245,200,66,.15);}
 }
 
-/* ── MAIN ── */
+/* FLOATING EMOJIS */
+.floating-emoji{
+  position:fixed;
+  pointer-events:none;
+  z-index:3;
+  animation:floatUp linear infinite;
+  user-select:none;
+}
+@keyframes floatUp{
+  0%{transform:translateY(0) rotate(0deg);opacity:.7;}
+  50%{opacity:.9;}
+  100%{transform:translateY(-100vh) rotate(360deg);opacity:0;}
+}
+
+/* MAIN PAGE */
 .page{
   position:relative;z-index:5;
   min-height:100vh;
@@ -123,8 +148,7 @@ body{
   text-align:center;
 }
 
-/* ── BADGE ── */
-.badge-wrap{margin-bottom:24px;}
+/* BADGE */
 .badge{
   display:inline-flex;align-items:center;gap:8px;
   background:rgba(124,92,204,.2);
@@ -136,18 +160,23 @@ body{
   letter-spacing:.6px;
   text-transform:uppercase;
   backdrop-filter:blur(10px);
+  margin-bottom:24px;
 }
 .badge-dot{
   width:7px;height:7px;border-radius:50%;
   background:#C4AAFF;
   animation:pulse 1.5s ease-in-out infinite;
 }
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(.7);}}
+@keyframes pulse{
+  0%,100%{opacity:1;transform:scale(1);}
+  50%{opacity:.4;transform:scale(.7);}
+}
 
-/* ── ANGEL ── */
+/* ANGEL */
 .angel-wrap{
   position:relative;
   margin-bottom:20px;
+  display:inline-block;
 }
 .angel{
   font-size:clamp(72px,12vw,110px);
@@ -162,7 +191,8 @@ body{
 }
 .halo{
   position:absolute;
-  top:-16px;left:50%;transform:translateX(-50%);
+  top:-14px;left:50%;
+  transform:translateX(-50%) rotateX(70deg);
   width:70px;height:18px;
   background:transparent;
   border:3px solid var(--gold);
@@ -171,11 +201,11 @@ body{
   animation:haloSpin 6s linear infinite;
 }
 @keyframes haloSpin{
-  0%{transform:translateX(-50%) rotateX(70deg) rotateZ(0deg);}
-  100%{transform:translateX(-50%) rotateX(70deg) rotateZ(360deg);}
+  from{transform:translateX(-50%) rotateX(70deg) rotateZ(0deg);}
+  to{transform:translateX(-50%) rotateX(70deg) rotateZ(360deg);}
 }
 
-/* ── TITLE ── */
+/* TEXTS */
 .academy-label{
   font:700 13px var(--fm);
   color:rgba(196,170,255,.7);
@@ -185,10 +215,10 @@ body{
 }
 .main-title{
   font-family:var(--fd);
-  font-size:clamp(48px,10vw,96px);
+  font-size:clamp(52px,10vw,100px);
   font-weight:700;
   line-height:1;
-  margin-bottom:16px;
+  margin-bottom:14px;
   background:linear-gradient(135deg,#E0CFFF 0%,#C4AAFF 30%,#FC4807 70%,#FFB347 100%);
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
@@ -197,14 +227,14 @@ body{
 }
 .main-subtitle{
   font-family:var(--fd);
-  font-size:clamp(16px,3vw,24px);
+  font-size:clamp(15px,3vw,22px);
   font-weight:500;
-  color:rgba(255,255,255,.75);
+  color:rgba(255,255,255,.72);
   margin-bottom:8px;
 }
 
-/* ── DATE HERO ── */
-.date-hero{
+/* DATE CARD */
+.date-card{
   display:inline-flex;align-items:center;gap:14px;
   background:linear-gradient(135deg,rgba(124,92,204,.3),rgba(252,72,7,.2));
   border:1px solid rgba(196,170,255,.3);
@@ -216,28 +246,36 @@ body{
 .date-icon{font-size:28px;}
 .date-text{
   font-family:var(--fd);
-  font-size:clamp(18px,3.5vw,28px);
+  font-size:clamp(17px,3.5vw,26px);
   font-weight:700;
   color:var(--white);
 }
 .date-sub{
   font:500 12px var(--fm);
   color:rgba(255,255,255,.5);
-  margin-top:2px;
+  margin-top:3px;
 }
 
-/* ── COUNTDOWN ── */
+/* COUNTDOWN */
+.countdown-label{
+  font:600 11px var(--fm);
+  color:rgba(255,255,255,.4);
+  text-transform:uppercase;
+  letter-spacing:.6px;
+  margin-bottom:12px;
+}
 .countdown-wrap{
-  display:flex;gap:16px;justify-content:center;
+  display:flex;gap:14px;
+  justify-content:center;
   flex-wrap:wrap;
-  margin:28px 0;
+  margin-bottom:32px;
 }
 .count-box{
   background:rgba(255,255,255,.07);
   border:1px solid rgba(255,255,255,.12);
   border-radius:16px;
-  padding:20px 24px;
-  min-width:90px;
+  padding:20px 26px;
+  min-width:88px;
   backdrop-filter:blur(10px);
   transition:all 200ms;
 }
@@ -252,16 +290,16 @@ body{
   font-weight:700;
   color:var(--white);
   line-height:1;
-  margin-bottom:4px;
+  margin-bottom:5px;
 }
 .count-lbl{
   font:600 10px var(--fm);
-  color:rgba(255,255,255,.45);
+  color:rgba(255,255,255,.4);
   text-transform:uppercase;
   letter-spacing:.6px;
 }
 
-/* ── DIVIDER ── */
+/* STAR DIVIDER */
 .star-divider{
   display:flex;align-items:center;gap:12px;
   margin:8px 0;
@@ -274,18 +312,53 @@ body{
   background:linear-gradient(90deg,transparent,rgba(245,200,66,.2),transparent);
 }
 
-/* ── DESCRIPTION ── */
+/* DESCRIPTION */
 .desc{
   font-size:clamp(14px,2vw,17px);
   color:rgba(255,255,255,.65);
   max-width:560px;
-  line-height:1.75;
-  margin:0 auto 32px;
+  line-height:1.8;
+  margin:0 auto 36px;
 }
 .desc strong{color:rgba(255,255,255,.9);}
 
-/* ── TEAM CARDS ── */
-.team-title{
+/* FEATURES */
+.features-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(195px,1fr));
+  gap:14px;
+  max-width:880px;
+  width:100%;
+  margin:0 auto 40px;
+}
+.feature{
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:16px;
+  padding:22px 16px;
+  text-align:center;
+  backdrop-filter:blur(8px);
+  transition:all 200ms;
+}
+.feature:hover{
+  background:rgba(124,92,204,.15);
+  border-color:rgba(196,170,255,.2);
+  transform:translateY(-4px);
+}
+.feature-icon{font-size:30px;margin-bottom:10px;display:block;}
+.feature-name{
+  font:700 13px var(--fd);
+  color:rgba(255,255,255,.88);
+  margin-bottom:5px;
+}
+.feature-desc{
+  font-size:11px;
+  color:rgba(255,255,255,.4);
+  line-height:1.55;
+}
+
+/* TEAM */
+.team-label{
   font:700 11px var(--fm);
   color:rgba(196,170,255,.6);
   text-transform:uppercase;
@@ -297,12 +370,14 @@ body{
   justify-content:center;
   flex-wrap:wrap;
   margin-bottom:36px;
+  max-width:900px;
+  width:100%;
 }
 .team-card{
   background:rgba(255,255,255,.07);
-  border:1px solid rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.10);
   border-radius:16px;
-  padding:16px 18px;
+  padding:14px 18px;
   display:flex;align-items:center;gap:10px;
   backdrop-filter:blur(8px);
   transition:all 200ms;
@@ -314,127 +389,99 @@ body{
   transform:translateY(-3px);
 }
 .team-av{
-  width:40px;height:40px;border-radius:50%;
+  width:40px;height:40px;
+  border-radius:50%;
   display:flex;align-items:center;justify-content:center;
-  font:700 14px var(--fd);color:#fff;
-  flex-shrink:0;
-  box-shadow:0 0 12px rgba(0,0,0,.3);
+  font:700 13px var(--fd);
+  color:#fff;flex-shrink:0;
+  box-shadow:0 0 16px rgba(0,0,0,.4);
 }
 .team-name{
   font:700 13px var(--fd);
   color:rgba(255,255,255,.9);
+  white-space:nowrap;
 }
 .team-role{
   font:400 11px var(--fp);
-  color:rgba(255,255,255,.45);
+  color:rgba(255,255,255,.42);
   margin-top:2px;
 }
 
-/* ── FEATURES ── */
-.features-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
-  gap:14px;
-  max-width:900px;
-  margin:0 auto 40px;
+/* CTA */
+.cta-title{
+  font-family:var(--fd);
+  font-size:clamp(20px,4vw,32px);
+  font-weight:700;
+  color:rgba(255,255,255,.92);
+  margin:28px 0 20px;
+  line-height:1.3;
 }
-.feature{
-  background:rgba(255,255,255,.05);
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:16px;
-  padding:20px 16px;
-  text-align:center;
-  backdrop-filter:blur(8px);
-  transition:all 200ms;
-}
-.feature:hover{
-  background:rgba(124,92,204,.15);
-  border-color:rgba(196,170,255,.2);
-  transform:translateY(-3px);
-}
-.feature-icon{font-size:28px;margin-bottom:8px;display:block;}
-.feature-name{
-  font:700 13px var(--fd);
-  color:rgba(255,255,255,.85);
-  margin-bottom:4px;
-}
-.feature-desc{
-  font-size:11px;
-  color:rgba(255,255,255,.4);
-  line-height:1.5;
-}
-
-/* ── CTA ── */
 .cta-wrap{
-  display:flex;gap:12px;justify-content:center;flex-wrap:wrap;
-  margin-bottom:48px;
+  display:flex;gap:12px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-bottom:40px;
 }
 .btn-cta{
   display:inline-flex;align-items:center;gap:8px;
-  border-radius:100px;font-family:var(--fp);font-weight:700;
-  cursor:pointer;white-space:nowrap;border:none;
-  transition:all 200ms;font-size:15px;
-  height:52px;padding:0 28px;text-decoration:none;
+  border-radius:100px;
+  font-family:var(--fp);font-weight:700;
+  cursor:pointer;
+  white-space:nowrap;
+  border:none;
+  transition:all 200ms;
+  font-size:15px;
+  height:52px;padding:0 28px;
+  text-decoration:none;
 }
-.btn-cta-prim{
+.btn-prim{
   background:linear-gradient(135deg,var(--purple),var(--brand));
   color:#fff;
   box-shadow:0 8px 32px rgba(124,92,204,.4);
 }
-.btn-cta-prim:hover{
-  opacity:.88;transform:translateY(-2px);
+.btn-prim:hover{
+  opacity:.88;
+  transform:translateY(-2px);
   box-shadow:0 12px 40px rgba(124,92,204,.5);
 }
-.btn-cta-sec{
+.btn-sec{
   background:rgba(255,255,255,.08);
   color:rgba(255,255,255,.85);
   border:1px solid rgba(255,255,255,.15);
   backdrop-filter:blur(8px);
 }
-.btn-cta-sec:hover{
+.btn-sec:hover{
   background:rgba(255,255,255,.15);
   transform:translateY(-2px);
 }
 
-/* ── FOOTER MSG ── */
+/* FOOTER */
 .footer-msg{
-  font:500 13px var(--fm);
-  color:rgba(255,255,255,.3);
-  margin-top:8px;
+  font:500 12px var(--fm);
+  color:rgba(255,255,255,.28);
 }
-.footer-msg strong{color:rgba(255,255,255,.55);}
+.footer-msg strong{color:rgba(255,255,255,.5);}
 
-/* ── FLOATING EMOJIS ── */
-.floating-emoji{
-  position:fixed;
-  pointer-events:none;
-  z-index:3;
-  animation:floatRandom linear infinite;
-  opacity:.6;
-  user-select:none;
-}
-@keyframes floatRandom{
-  0%{transform:translateY(0) rotate(0deg);opacity:.6;}
-  50%{opacity:.9;}
-  100%{transform:translateY(-100vh) rotate(360deg);opacity:0;}
-}
-
-/* ── RESPONSIVE ── */
+/* RESPONSIVE */
 @media(max-width:600px){
-  .moon{width:55px;height:55px;top:40px;right:24px;}
-  .countdown-wrap{gap:10px;}
+  .moon{width:52px;height:52px;top:40px;right:20px;}
   .count-box{padding:14px 16px;min-width:72px;}
   .features-grid{grid-template-columns:1fr 1fr;}
-  .team-grid{gap:8px;}
+  .date-card{padding:14px 20px;flex-direction:column;gap:6px;}
+  .team-card{padding:10px 14px;}
+}
+
+/* KEYFRAME TWINKLE */
+@keyframes twinkle{
+  from{opacity:.1;transform:scale(.6);}
+  to{opacity:1;transform:scale(1.3);}
 }
 </style>
 </head>
 <body>
 
-<!-- AURORA -->
 <div class="aurora"></div>
 
-<!-- CLOUDS -->
 <div class="clouds">
   <div class="cl cl1"></div>
   <div class="cl cl2"></div>
@@ -442,54 +489,49 @@ body{
   <div class="cl cl4"></div>
 </div>
 
-<!-- MOON -->
 <div class="moon"></div>
 
-<!-- STARS -->
-<svg class="stars-bg" id="starsBg"></svg>
+<svg id="starsBg"></svg>
 
-<!-- FLOATING EMOJIS -->
 <div id="floatingEmojis"></div>
 
-<!-- MAIN -->
 <div class="page">
 
   <!-- Badge -->
-  <div class="badge-wrap">
-    <div class="badge">
-      <span class="badge-dot"></span>
-      Comeca Hoje — Segunda-feira
-    </div>
+  <div class="badge">
+    <span class="badge-dot"></span>
+    Começa Hoje — Segunda-feira
   </div>
 
-  <!-- Angel -->
+  <!-- Anjo -->
   <div class="angel-wrap">
     <div class="halo"></div>
     <div class="angel">😇</div>
   </div>
 
-  <!-- Academy label -->
-  <div class="academy-label">CNA Idiomas · Midia · Cadastra · 2026</div>
+  <!-- Labels -->
+  <div class="academy-label">
+    CNA Idiomas · Mídia · Cadastra · 2026
+  </div>
 
-  <!-- Title -->
+  <!-- Título -->
   <h1 class="main-title">CNAcademy</h1>
-  <div class="main-subtitle">O programa de desenvolvimento celestial comeca agora</div>
+  <div class="main-subtitle">
+    O programa de desenvolvimento celestial começa agora
+  </div>
 
-  <!-- Date -->
-  <div class="date-hero">
+  <!-- Data -->
+  <div class="date-card">
     <span class="date-icon">🗓</span>
     <div>
       <div class="date-text">Segunda-feira, 06 de Abril de 2026</div>
-      <div class="date-sub">Hoje e o dia. A jornada comeca agora.</div>
+      <div class="date-sub">Hoje é o dia. A jornada começa agora.</div>
     </div>
   </div>
 
-  <!-- Countdown -->
-  <div style="font:600 11px var(--fm);color:rgba(255,255,255,.4);
-    text-transform:uppercase;letter-spacing:.6px;margin-bottom:12px;">
-    Tempo desde o inicio
-  </div>
-  <div class="countdown-wrap" id="countdown">
+  <!-- Contador -->
+  <div class="countdown-label">Tempo desde o início</div>
+  <div class="countdown-wrap">
     <div class="count-box">
       <div class="count-num" id="cd-h">00</div>
       <div class="count-lbl">Horas</div>
@@ -507,12 +549,12 @@ body{
   <!-- Divider -->
   <div class="star-divider">✦ ✦ ✦</div>
 
-  <!-- Description -->
+  <!-- Descrição -->
   <p class="desc">
-    Hoje comeca uma jornada de <strong>12 semanas</strong> de aprendizado real,
-    desafios praticos e evolucao profissional.<br/>
+    Hoje começa uma jornada de <strong>12 semanas</strong> de aprendizado real,
+    desafios práticos e evolução profissional.<br/><br/>
     Usando a metodologia <strong>PBL — Project Based Learning</strong>,
-    voces vao aprender fazendo — com dados reais do CNA,
+    vocês vão aprender fazendo, com dados reais do CNA,
     campanhas reais e resultados reais.
   </p>
 
@@ -520,167 +562,200 @@ body{
   <div class="features-grid">
     <div class="feature">
       <span class="feature-icon">📚</span>
-      <div class="feature-name">3 Modulos</div>
-      <div class="feature-desc">Fundamentos, Analise de Dados e Planejamento Estrategico</div>
+      <div class="feature-name">3 Módulos</div>
+      <div class="feature-desc">
+        Fundamentos, Análise de Dados e Planejamento Estratégico
+      </div>
     </div>
     <div class="feature">
       <span class="feature-icon">⚡</span>
       <div class="feature-name">12 Desafios</div>
-      <div class="feature-desc">Um desafio por semana com dados reais do CNA</div>
+      <div class="feature-desc">
+        Um desafio por semana com dados reais do CNA
+      </div>
     </div>
     <div class="feature">
       <span class="feature-icon">📊</span>
       <div class="feature-name">Trilha Sheets</div>
-      <div class="feature-desc">12 formulas essenciais do Google Sheets na pratica</div>
+      <div class="feature-desc">
+        12 fórmulas essenciais do Google Sheets na prática
+      </div>
     </div>
     <div class="feature">
       <span class="feature-icon">🏆</span>
       <div class="feature-name">Certificado</div>
-      <div class="feature-desc">Certificado de conclusao emitido pelo Joel ao final</div>
+      <div class="feature-desc">
+        Certificado de conclusão emitido pelo Joel ao final
+      </div>
     </div>
   </div>
 
-  <!-- Team -->
-  <div class="team-title">Os Anjos que fazem parte dessa jornada</div>
- <div class="team-grid">
-  <div class="team-card">
-    <div class="team-av" style="background:#FC4807;">JR</div>
-    <div>
-      <div class="team-name">Joel Rodrigues Ruivo</div>
-      <div class="team-role">Líder de Mídia · Mentor</div>
+  <!-- Time -->
+  <div class="team-label">Os anjos que fazem parte dessa jornada</div>
+  <div class="team-grid">
+    <div class="team-card">
+      <div class="team-av" style="background:#FC4807;">JR</div>
+      <div>
+        <div class="team-name">Joel Rodrigues Ruivo</div>
+        <div class="team-role">Líder de Mídia e Mentor</div>
+      </div>
+    </div>
+    <div class="team-card">
+      <div class="team-av" style="background:#FF1493;">AS</div>
+      <div>
+        <div class="team-name">Anna Salvati</div>
+        <div class="team-role">Especialista Mídia</div>
+      </div>
+    </div>
+    <div class="team-card">
+      <div class="team-av" style="background:#00CC88;">NR</div>
+      <div>
+        <div class="team-name">Nataly Rodrigues</div>
+        <div class="team-role">Especialista Mídia</div>
+      </div>
+    </div>
+    <div class="team-card">
+      <div class="team-av" style="background:#CC0044;">LF</div>
+      <div>
+        <div class="team-name">Lais Flores</div>
+        <div class="team-role">Especialista Franquias</div>
+      </div>
+    </div>
+    <div class="team-card">
+      <div class="team-av" style="background:#9B27AF;">KS</div>
+      <div>
+        <div class="team-name">Karol Silva</div>
+        <div class="team-role">Especialista Franquias</div>
+      </div>
     </div>
   </div>
-  <div class="team-card">
-    <div class="team-av" style="background:#FF1493;">AS</div>
-    <div>
-      <div class="team-name">Anna Salvati</div>
-      <div class="team-role">Especialista Mídia</div>
-    </div>
-  </div>
-  <div class="team-card">
-    <div class="team-av" style="background:#00CC88;">NR</div>
-    <div>
-      <div class="team-name">Nataly Rodrigues</div>
-      <div class="team-role">Especialista Mídia</div>
-    </div>
-  </div>
-  <div class="team-card">
-    <div class="team-av" style="background:#CC0044;">LF</div>
-    <div>
-      <div class="team-name">Lais Flores</div>
-      <div class="team-role">Especialista Franquias</div>
-    </div>
-  </div>
-  <div class="team-card">
-    <div class="team-av" style="background:#9B27AF;">KS</div>
-    <div>
-      <div class="team-name">Karol Silva</div>
-      <div class="team-role">Especialista Franquias</div>
-    </div>
-  </div>
-</div>
 
   <!-- Divider -->
   <div class="star-divider">✦ ✦ ✦</div>
 
   <!-- CTA -->
-  <div style="font-family:var(--fd);font-size:clamp(20px,4vw,32px);
-    font-weight:700;color:rgba(255,255,255,.9);
-    margin:24px 0 20px;line-height:1.3;">
-    Prontas para voar, Anjas? 👼
-  </div>
+  <div class="cta-title">Prontas para voar, Anjas? 👼</div>
   <div class="cta-wrap">
-    <a href="login.html" class="btn-cta btn-cta-prim">
-      <span>😇</span>
-      Acessar o CNAcademy
+    <a href="login.html" class="btn-cta btn-prim">
+      😇 Acessar o CNAcademy
     </a>
-    <a href="instrucoes.html" class="btn-cta btn-cta-sec">
-      <span>📖</span>
-      Ver Instrucoes
+    <a href="instrucoes.html" class="btn-cta btn-sec">
+      📖 Ver Instruções
     </a>
   </div>
 
-  <!-- Footer msg -->
+  <!-- Footer -->
   <div class="footer-msg">
-    Conduzido por <strong>Joel Rodrigues Ruivo</strong> ·
-    CNA Idiomas · Midia · Cadastra · 2026
+    Conduzido por <strong>Joel Rodrigues Ruivo</strong>
+    · CNA Idiomas · Mídia · Cadastra · 2026
   </div>
 
 </div>
 
 <script>
-// ── STARS ──────────────────────────────────
+// ── STARS ─────────────────────────────────
 (function(){
   const svg = document.getElementById('starsBg');
-  const count = 200;
-  for(let i=0;i<count;i++){
-    const star = document.createElementNS('http://www.w3.org/2000/svg','circle');
-    const x    = Math.random()*100;
-    const y    = Math.random()*100;
-    const r    = Math.random()*1.8+.2;
-    const dur  = 1.5+Math.random()*3;
-    const del  = Math.random()*4;
-    star.setAttribute('cx', x+'%');
-    star.setAttribute('cy', y+'%');
-    star.setAttribute('r',  r);
-    star.setAttribute('fill', Math.random()>.7 ? '#F5C842' : '#FFFFFF');
-    star.setAttribute('opacity', (.2+Math.random()*.8).toFixed(2));
-    star.style.animation =
-      `twinkle ${dur}s ease-in-out ${del}s infinite alternate`;
-    svg.appendChild(star);
+  svg.setAttribute('width',  '100%');
+  svg.setAttribute('height', '100%');
+  svg.setAttribute('viewBox', '0 0 1440 900');
+  svg.setAttribute('preserveAspectRatio', 'xMidYMid slice');
+  svg.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:0;';
+
+  // Filtro de brilho
+  const defs = document.createElementNS('http://www.w3.org/2000/svg','defs');
+  defs.innerHTML = `
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>`;
+  svg.appendChild(defs);
+
+  const W = 1440, H = 900;
+
+  // 250 estrelas espalhadas por toda a tela
+  for(let i = 0; i < 250; i++){
+    const c = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    c.setAttribute('cx',    (Math.random() * W).toFixed(1));
+    c.setAttribute('cy',    (Math.random() * H).toFixed(1));
+    c.setAttribute('r',     (Math.random() * 1.8 + 0.3).toFixed(2));
+    c.setAttribute('fill',  Math.random() > 0.72 ? '#F5C842' : '#FFFFFF');
+    c.setAttribute('opacity',(0.2 + Math.random() * 0.8).toFixed(2));
+    c.style.animation = `twinkle ${1.5+Math.random()*3}s ease-in-out ${Math.random()*5}s infinite alternate`;
+    svg.appendChild(c);
   }
+
+  // Estrelas maiores e brilhantes espalhadas estrategicamente
+  const posicoes = [
+    [80,60],[250,40],[420,80],[600,30],[780,70],[960,50],
+    [1140,90],[1320,45],[1420,120],[140,200],[360,180],
+    [540,220],[720,160],[900,210],[1080,170],[1260,230],
+    [1400,280],[60,350],[280,320],[500,380],[700,300],
+    [880,360],[1060,310],[1240,400],[1380,340],[100,480],
+    [320,450],[560,500],[760,460],[940,510],[1120,440],
+    [1300,490],[200,600],[440,570],[660,640],[860,590],
+    [1040,620],[1220,560],[1380,650],[120,720],[380,700],
+    [600,760],[800,710],[1000,750],[1200,700],[1400,760],
+    [240,840],[500,820],[740,860],[1000,830],[1260,850],
+  ];
+
+  posicoes.forEach(([x,y]) => {
+    const c = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    const r = 1.2 + Math.random() * 2;
+    c.setAttribute('cx', x);
+    c.setAttribute('cy', y);
+    c.setAttribute('r',  r.toFixed(2));
+    c.setAttribute('fill', Math.random() > 0.5 ? '#F5C842' : '#FFFFFF');
+    c.setAttribute('opacity', (0.7 + Math.random() * 0.3).toFixed(2));
+    c.setAttribute('filter', 'url(#glow)');
+    c.style.animation = `twinkle ${2+Math.random()*2.5}s ease-in-out ${Math.random()*4}s infinite alternate`;
+    svg.appendChild(c);
+  });
 })();
 
 // ── FLOATING EMOJIS ───────────────────────
 (function(){
   const wrap   = document.getElementById('floatingEmojis');
   const emojis = ['⭐','✨','🌟','💫','👼','😇','🎓','🏆','📚','⚡'];
-  for(let i=0;i<15;i++){
-    const el       = document.createElement('div');
-    el.className   = 'floating-emoji';
-    el.textContent = emojis[Math.floor(Math.random()*emojis.length)];
-    const size     = 14+Math.random()*20;
-    const left     = Math.random()*100;
-    const dur      = 8+Math.random()*16;
-    const del      = Math.random()*10;
+  for(let i = 0; i < 18; i++){
+    const el = document.createElement('div');
+    el.className = 'floating-emoji';
+    el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    const size = 12 + Math.random() * 22;
+    const left = Math.random() * 100;
+    const dur  = 10 + Math.random() * 18;
+    const del  = Math.random() * 12;
     el.style.cssText = `
       font-size:${size}px;
       left:${left}%;
-      bottom:-60px;
+      bottom:-80px;
       animation-duration:${dur}s;
-      animation-delay:${del}s;`;
+      animation-delay:${del}s;
+      opacity:0.6;`;
     wrap.appendChild(el);
   }
 })();
 
-// ── COUNTDOWN — tempo desde o inicio ─────
+// ── CONTADOR — tempo desde o início ──────
 (function(){
   const inicio = new Date('2026-04-06T09:00:00');
-  function update(){
-    const agora    = new Date();
-    let   diff     = Math.max(0, agora - inicio);
-    const h  = Math.floor(diff/3600000);
-    diff    -= h*3600000;
-    const m  = Math.floor(diff/60000);
-    diff    -= m*60000;
-    const s  = Math.floor(diff/1000);
-    const pad = n => String(n).padStart(2,'0');
+  const pad    = n => String(n).padStart(2,'0');
+  function atualizar(){
+    const agora = new Date();
+    let   diff  = Math.max(0, agora - inicio);
+    const h  = Math.floor(diff / 3600000); diff -= h * 3600000;
+    const m  = Math.floor(diff / 60000);   diff -= m * 60000;
+    const s  = Math.floor(diff / 1000);
     document.getElementById('cd-h').textContent = pad(h);
     document.getElementById('cd-m').textContent = pad(m);
     document.getElementById('cd-s').textContent = pad(s);
   }
-  update();
-  setInterval(update,1000);
+  atualizar();
+  setInterval(atualizar, 1000);
 })();
-
-// ── INJECT CSS ANIMATION ──────────────────
-const style = document.createElement('style');
-style.textContent = `
-  @keyframes twinkle{
-    from{opacity:.1;transform:scale(.6);}
-    to{opacity:1;transform:scale(1.3);}
-  }`;
-document.head.appendChild(style);
 </script>
 </body>
 </html>
