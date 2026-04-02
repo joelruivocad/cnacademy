@@ -133,7 +133,20 @@ function renderTimeline(pdi, u) {
           <div style="display:flex;align-items:flex-start;
             justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
             <div>
-              <div class="timeline-week">${semana} · Sheets: ${d.sheets}</div>
+              <div class="timeline-week">
+  ${semana} &nbsp;·&nbsp;
+  <a href="formula.html?s=S${i + 1}"
+    target="_blank"
+    style="color:var(--purple);
+      text-decoration:underline;
+      font-family:var(--fm);
+      font-size:11px;
+      transition:opacity 150ms;"
+    onmouseover="this.style.opacity='.7'"
+    onmouseout="this.style.opacity='1'">
+    📊 ${d.sheets}
+  </a>
+</div>
               <div class="timeline-tema">${d.tema}</div>
             </div>
             <span style="background:${cfg.color};color:${cfg.text};
