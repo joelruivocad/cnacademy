@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>😇</text></svg>"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<title>CNAcademy — Comeca Hoje!</title>
+<style>
+:root{
+  --purple:#7C5CCC;--purple-bg:#EDE7FF;--purple-light:#D4C5FF;
+  --brand:#FC4807;--brand-light:#FDE9E6;
+  --sky1:#C9E8FF;--sky2:#E8F4FF;--sky3:#F0F6FF;
+  --gold:#F5C842;--gold-dark:#C49A00;
+  --white:#fff;--gs400:#9A9A9A;--gs500:#5E5E5E;--gs900:#1E1E1E;
+  --fp:'Inter',system-ui,sans-serif;
+  --fd:'Space Grotesk',system-ui,sans-serif;
+  --fm:'Space Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:var(--fp);
+  background:linear-gradient(160deg,#0A0520 0%,#1A0A4A 30%,#2D1060 55%,#1A0535 80%,#050010 100%);
+  min-height:100vh;
+  overflow-x:hidden;
+  color:var(--white);
+  position:relative;
+}
+
+/* ── STARS ── */
+.stars-bg{position:fixed;inset:0;pointer-events:none;z-index:0;}
+
+/* ── SHOOTING STARS ── */
+.shooting-star{
+  position:fixed;
+  width:3px;height:3px;
+  background:var(--white);
+  border-radius:50%;
+  pointer-events:none;
+  z-index:1;
+}
+.shooting-star::after{
+  content:'';
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:120px;height:1px;
+  background:linear-gradient(90deg,rgba(255,255,255,.8),transparent);
+  transform-origin:right center;
+}
+
+/* ── CLOUDS ── */
+.clouds{position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden;}
+.cl{position:absolute;background:rgba(255,255,255,.06);border-radius:50px;filter:blur(4px);animation:drift linear infinite;}
+.cl::before,.cl::after{content:'';position:absolute;background:inherit;border-radius:50%;}
+.cl1{width:200px;height:60px;top:15%;left:-220px;animation-duration:55s;}
+.cl1::before{width:100px;height:88px;top:-32px;left:22px;}
+.cl1::after{width:78px;height:70px;top:-24px;left:82px;}
+.cl2{width:280px;height:78px;top:35%;left:-320px;animation-duration:72s;animation-delay:15s;opacity:.7;}
+.cl2::before{width:125px;height:108px;top:-38px;left:30px;}
+.cl2::after{width:98px;height:88px;top:-30px;left:120px;}
+.cl3{width:160px;height:50px;top:65%;left:-185px;animation-duration:62s;animation-delay:6s;opacity:.5;}
+.cl3::before{width:82px;height:70px;top:-25px;left:15px;}
+.cl4{width:240px;height:70px;top:80%;left:-275px;animation-duration:80s;animation-delay:30s;opacity:.4;}
+.cl4::before{width:115px;height:100px;top:-36px;left:28px;}
+.cl4::after{width:88px;height:80px;top:-28px;left:110px;}
+@keyframes drift{from{transform:translateX(0);}to{transform:translateX(calc(100vw + 350px));}}
+
+/* ── AURORA ── */
+.aurora{
+  position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(ellipse 80% 40% at 20% 80%,rgba(124,92,204,.25) 0%,transparent 60%),
+    radial-gradient(ellipse 60% 35% at 80% 20%,rgba(252,72,7,.15) 0%,transparent 55%),
+    radial-gradient(ellipse 70% 30% at 50% 100%,rgba(124,92,204,.2) 0%,transparent 50%);
+  animation:aurora 8s ease-in-out infinite alternate;
+}
+@keyframes aurora{
+  from{opacity:.6;transform:scale(1);}
+  to{opacity:1;transform:scale(1.05);}
+}
+
+/* ── MOON ── */
+.moon{
+  position:fixed;
+  top:60px;right:80px;
+  width:80px;height:80px;
+  border-radius:50%;
+  background:radial-gradient(circle at 35% 35%,#FFF8E1,#F5C842 40%,#C49A00 80%);
+  box-shadow:0 0 40px rgba(245,200,66,.4),0 0 80px rgba(245,200,66,.2),0 0 120px rgba(245,200,66,.1);
+  animation:moonGlow 4s ease-in-out infinite alternate;
+  z-index:2;
+}
+.moon::before{
+  content:'';
+  position:absolute;
+  top:15px;left:20px;
+  width:18px;height:18px;
+  border-radius:50%;
+  background:rgba(196,154,0,.3);
+}
+.moon::after{
+  content:'';
+  position:absolute;
+  top:35px;left:45px;
+  width:12px;height:12px;
+  border-radius:50%;
+  background:rgba(196,154,0,.25);
+}
+@keyframes moonGlow{
+  from{box-shadow:0 0 40px rgba(245,200,66,.4),0 0 80px rgba(245,200,66,.2);}
+  to{box-shadow:0 0 60px rgba(245,200,66,.6),0 0 120px rgba(245,200,66,.3),0 0 160px rgba(245,200,66,.15);}
+}
+
+/* ── MAIN ── */
+.page{
+  position:relative;z-index:5;
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:60px 24px 80px;
+  text-align:center;
+}
+
+/* ── BADGE ── */
+.badge-wrap{margin-bottom:24px;}
+.badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(124,92,204,.2);
+  border:1px solid rgba(124,92,204,.4);
+  border-radius:100px;
+  padding:8px 20px;
+  font:700 12px var(--fm);
+  color:#C4AAFF;
+  letter-spacing:.6px;
+  text-transform:uppercase;
+  backdrop-filter:blur(10px);
+}
+.badge-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:#C4AAFF;
+  animation:pulse 1.5s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(.7);}}
+
+/* ── ANGEL ── */
+.angel-wrap{
+  position:relative;
+  margin-bottom:20px;
+}
+.angel{
+  font-size:clamp(72px,12vw,110px);
+  display:inline-block;
+  animation:floatAngel 4s ease-in-out infinite;
+  filter:drop-shadow(0 0 30px rgba(245,200,66,.5));
+  line-height:1;
+}
+@keyframes floatAngel{
+  0%,100%{transform:translateY(0) rotate(-2deg);}
+  50%{transform:translateY(-16px) rotate(2deg);}
+}
+.halo{
+  position:absolute;
+  top:-16px;left:50%;transform:translateX(-50%);
+  width:70px;height:18px;
+  background:transparent;
+  border:3px solid var(--gold);
+  border-radius:50%;
+  box-shadow:0 0 12px var(--gold),0 0 24px rgba(245,200,66,.4);
+  animation:haloSpin 6s linear infinite;
+}
+@keyframes haloSpin{
+  0%{transform:translateX(-50%) rotateX(70deg) rotateZ(0deg);}
+  100%{transform:translateX(-50%) rotateX(70deg) rotateZ(360deg);}
+}
+
+/* ── TITLE ── */
+.academy-label{
+  font:700 13px var(--fm);
+  color:rgba(196,170,255,.7);
+  letter-spacing:1px;
+  text-transform:uppercase;
+  margin-bottom:10px;
+}
+.main-title{
+  font-family:var(--fd);
+  font-size:clamp(48px,10vw,96px);
+  font-weight:700;
+  line-height:1;
+  margin-bottom:16px;
+  background:linear-gradient(135deg,#E0CFFF 0%,#C4AAFF 30%,#FC4807 70%,#FFB347 100%);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  letter-spacing:-1px;
+}
+.main-subtitle{
+  font-family:var(--fd);
+  font-size:clamp(16px,3vw,24px);
+  font-weight:500;
+  color:rgba(255,255,255,.75);
+  margin-bottom:8px;
+}
+
+/* ── DATE HERO ── */
+.date-hero{
+  display:inline-flex;align-items:center;gap:14px;
+  background:linear-gradient(135deg,rgba(124,92,204,.3),rgba(252,72,7,.2));
+  border:1px solid rgba(196,170,255,.3);
+  border-radius:20px;
+  padding:16px 32px;
+  margin:24px 0;
+  backdrop-filter:blur(12px);
+}
+.date-icon{font-size:28px;}
+.date-text{
+  font-family:var(--fd);
+  font-size:clamp(18px,3.5vw,28px);
+  font-weight:700;
+  color:var(--white);
+}
+.date-sub{
+  font:500 12px var(--fm);
+  color:rgba(255,255,255,.5);
+  margin-top:2px;
+}
+
+/* ── COUNTDOWN ── */
+.countdown-wrap{
+  display:flex;gap:16px;justify-content:center;
+  flex-wrap:wrap;
+  margin:28px 0;
+}
+.count-box{
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:16px;
+  padding:20px 24px;
+  min-width:90px;
+  backdrop-filter:blur(10px);
+  transition:all 200ms;
+}
+.count-box:hover{
+  background:rgba(124,92,204,.2);
+  border-color:rgba(196,170,255,.4);
+  transform:translateY(-4px);
+}
+.count-num{
+  font-family:var(--fd);
+  font-size:clamp(32px,6vw,52px);
+  font-weight:700;
+  color:var(--white);
+  line-height:1;
+  margin-bottom:4px;
+}
+.count-lbl{
+  font:600 10px var(--fm);
+  color:rgba(255,255,255,.45);
+  text-transform:uppercase;
+  letter-spacing:.6px;
+}
+
+/* ── DIVIDER ── */
+.star-divider{
+  display:flex;align-items:center;gap:12px;
+  margin:8px 0;
+  color:rgba(245,200,66,.4);
+  font-size:16px;
+}
+.star-divider::before,.star-divider::after{
+  content:'';flex:1;
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(245,200,66,.2),transparent);
+}
+
+/* ── DESCRIPTION ── */
+.desc{
+  font-size:clamp(14px,2vw,17px);
+  color:rgba(255,255,255,.65);
+  max-width:560px;
+  line-height:1.75;
+  margin:0 auto 32px;
+}
+.desc strong{color:rgba(255,255,255,.9);}
+
+/* ── TEAM CARDS ── */
+.team-title{
+  font:700 11px var(--fm);
+  color:rgba(196,170,255,.6);
+  text-transform:uppercase;
+  letter-spacing:.6px;
+  margin-bottom:16px;
+}
+.team-grid{
+  display:flex;gap:12px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-bottom:36px;
+}
+.team-card{
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:16px;
+  padding:16px 18px;
+  display:flex;align-items:center;gap:10px;
+  backdrop-filter:blur(8px);
+  transition:all 200ms;
+  cursor:default;
+}
+.team-card:hover{
+  background:rgba(124,92,204,.2);
+  border-color:rgba(196,170,255,.3);
+  transform:translateY(-3px);
+}
+.team-av{
+  width:40px;height:40px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font:700 14px var(--fd);color:#fff;
+  flex-shrink:0;
+  box-shadow:0 0 12px rgba(0,0,0,.3);
+}
+.team-name{
+  font:700 13px var(--fd);
+  color:rgba(255,255,255,.9);
+}
+.team-role{
+  font:400 11px var(--fp);
+  color:rgba(255,255,255,.45);
+  margin-top:2px;
+}
+
+/* ── FEATURES ── */
+.features-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:14px;
+  max-width:900px;
+  margin:0 auto 40px;
+}
+.feature{
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:16px;
+  padding:20px 16px;
+  text-align:center;
+  backdrop-filter:blur(8px);
+  transition:all 200ms;
+}
+.feature:hover{
+  background:rgba(124,92,204,.15);
+  border-color:rgba(196,170,255,.2);
+  transform:translateY(-3px);
+}
+.feature-icon{font-size:28px;margin-bottom:8px;display:block;}
+.feature-name{
+  font:700 13px var(--fd);
+  color:rgba(255,255,255,.85);
+  margin-bottom:4px;
+}
+.feature-desc{
+  font-size:11px;
+  color:rgba(255,255,255,.4);
+  line-height:1.5;
+}
+
+/* ── CTA ── */
+.cta-wrap{
+  display:flex;gap:12px;justify-content:center;flex-wrap:wrap;
+  margin-bottom:48px;
+}
+.btn-cta{
+  display:inline-flex;align-items:center;gap:8px;
+  border-radius:100px;font-family:var(--fp);font-weight:700;
+  cursor:pointer;white-space:nowrap;border:none;
+  transition:all 200ms;font-size:15px;
+  height:52px;padding:0 28px;text-decoration:none;
+}
+.btn-cta-prim{
+  background:linear-gradient(135deg,var(--purple),var(--brand));
+  color:#fff;
+  box-shadow:0 8px 32px rgba(124,92,204,.4);
+}
+.btn-cta-prim:hover{
+  opacity:.88;transform:translateY(-2px);
+  box-shadow:0 12px 40px rgba(124,92,204,.5);
+}
+.btn-cta-sec{
+  background:rgba(255,255,255,.08);
+  color:rgba(255,255,255,.85);
+  border:1px solid rgba(255,255,255,.15);
+  backdrop-filter:blur(8px);
+}
+.btn-cta-sec:hover{
+  background:rgba(255,255,255,.15);
+  transform:translateY(-2px);
+}
+
+/* ── FOOTER MSG ── */
+.footer-msg{
+  font:500 13px var(--fm);
+  color:rgba(255,255,255,.3);
+  margin-top:8px;
+}
+.footer-msg strong{color:rgba(255,255,255,.55);}
+
+/* ── FLOATING EMOJIS ── */
+.floating-emoji{
+  position:fixed;
+  pointer-events:none;
+  z-index:3;
+  animation:floatRandom linear infinite;
+  opacity:.6;
+  user-select:none;
+}
+@keyframes floatRandom{
+  0%{transform:translateY(0) rotate(0deg);opacity:.6;}
+  50%{opacity:.9;}
+  100%{transform:translateY(-100vh) rotate(360deg);opacity:0;}
+}
+
+/* ── RESPONSIVE ── */
+@media(max-width:600px){
+  .moon{width:55px;height:55px;top:40px;right:24px;}
+  .countdown-wrap{gap:10px;}
+  .count-box{padding:14px 16px;min-width:72px;}
+  .features-grid{grid-template-columns:1fr 1fr;}
+  .team-grid{gap:8px;}
+}
+</style>
+</head>
+<body>
+
+<!-- AURORA -->
+<div class="aurora"></div>
+
+<!-- CLOUDS -->
+<div class="clouds">
+  <div class="cl cl1"></div>
+  <div class="cl cl2"></div>
+  <div class="cl cl3"></div>
+  <div class="cl cl4"></div>
+</div>
+
+<!-- MOON -->
+<div class="moon"></div>
+
+<!-- STARS -->
+<svg class="stars-bg" id="starsBg"></svg>
+
+<!-- FLOATING EMOJIS -->
+<div id="floatingEmojis"></div>
+
+<!-- MAIN -->
+<div class="page">
+
+  <!-- Badge -->
+  <div class="badge-wrap">
+    <div class="badge">
+      <span class="badge-dot"></span>
+      Comeca Hoje — Segunda-feira
+    </div>
+  </div>
+
+  <!-- Angel -->
+  <div class="angel-wrap">
+    <div class="halo"></div>
+    <div class="angel">😇</div>
+  </div>
+
+  <!-- Academy label -->
+  <div class="academy-label">CNA Idiomas · Midia · Cadastra · 2026</div>
+
+  <!-- Title -->
+  <h1 class="main-title">CNAcademy</h1>
+  <div class="main-subtitle">O programa de desenvolvimento celestial comeca agora</div>
+
+  <!-- Date -->
+  <div class="date-hero">
+    <span class="date-icon">🗓</span>
+    <div>
+      <div class="date-text">Segunda-feira, 06 de Abril de 2026</div>
+      <div class="date-sub">Hoje e o dia. A jornada comeca agora.</div>
+    </div>
+  </div>
+
+  <!-- Countdown -->
+  <div style="font:600 11px var(--fm);color:rgba(255,255,255,.4);
+    text-transform:uppercase;letter-spacing:.6px;margin-bottom:12px;">
+    Tempo desde o inicio
+  </div>
+  <div class="countdown-wrap" id="countdown">
+    <div class="count-box">
+      <div class="count-num" id="cd-h">00</div>
+      <div class="count-lbl">Horas</div>
+    </div>
+    <div class="count-box">
+      <div class="count-num" id="cd-m">00</div>
+      <div class="count-lbl">Minutos</div>
+    </div>
+    <div class="count-box">
+      <div class="count-num" id="cd-s">00</div>
+      <div class="count-lbl">Segundos</div>
+    </div>
+  </div>
+
+  <!-- Divider -->
+  <div class="star-divider">✦ ✦ ✦</div>
+
+  <!-- Description -->
+  <p class="desc">
+    Hoje comeca uma jornada de <strong>12 semanas</strong> de aprendizado real,
+    desafios praticos e evolucao profissional.<br/>
+    Usando a metodologia <strong>PBL — Project Based Learning</strong>,
+    voces vao aprender fazendo — com dados reais do CNA,
+    campanhas reais e resultados reais.
+  </p>
+
+  <!-- Features -->
+  <div class="features-grid">
+    <div class="feature">
+      <span class="feature-icon">📚</span>
+      <div class="feature-name">3 Modulos</div>
+      <div class="feature-desc">Fundamentos, Analise de Dados e Planejamento Estrategico</div>
+    </div>
+    <div class="feature">
+      <span class="feature-icon">⚡</span>
+      <div class="feature-name">12 Desafios</div>
+      <div class="feature-desc">Um desafio por semana com dados reais do CNA</div>
+    </div>
+    <div class="feature">
+      <span class="feature-icon">📊</span>
+      <div class="feature-name">Trilha Sheets</div>
+      <div class="feature-desc">12 formulas essenciais do Google Sheets na pratica</div>
+    </div>
+    <div class="feature">
+      <span class="feature-icon">🏆</span>
+      <div class="feature-name">Certificado</div>
+      <div class="feature-desc">Certificado de conclusao emitido pelo Joel ao final</div>
+    </div>
+  </div>
+
+  <!-- Team -->
+  <div class="team-title">Os Anjos que fazem parte dessa jornada</div>
+  <div class="team-grid">
+    <div class="team-card">
+      <div class="team-av" style="background:#FC4807;">JR</div>
+      <div>
+        <div class="team-name">Joel Rodrigues Ruivo</div>
+        <div class="team-role">Lider de Midia · Mentor</div>
+      </div>
+    </div>
+    <div class="team-card">
+      <div class="team-av" style="background:#FF1493;">AS</div>
+      <div>
+        <div class="team-name">Anna Salvati</div>
+        <div class="team-role">Especialista Midia</div>
+      </div>
+    </div>
+    <div class="team-card">
+      <div class="team-av" style="background:#00CC88;">NR</div>
+      <div>
+        <div class="team-name">Nataly Rodrigues</div>
+        <div class="team-role">Especialista Midia</div>
+      </div>
+    </div>
+    <div class="team-card">
+      <div class="team-av" style="background:#CC0044;">LF</div>
+      <div>
+        <div class="team-name">Lais Flores</div>
+        <div class="team-role">Especialista Franquias</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Divider -->
+  <div class="star-divider">✦ ✦ ✦</div>
+
+  <!-- CTA -->
+  <div style="font-family:var(--fd);font-size:clamp(20px,4vw,32px);
+    font-weight:700;color:rgba(255,255,255,.9);
+    margin:24px 0 20px;line-height:1.3;">
+    Prontas para voar, Anjas? 👼
+  </div>
+  <div class="cta-wrap">
+    <a href="login.html" class="btn-cta btn-cta-prim">
+      <span>😇</span>
+      Acessar o CNAcademy
+    </a>
+    <a href="instrucoes.html" class="btn-cta btn-cta-sec">
+      <span>📖</span>
+      Ver Instrucoes
+    </a>
+  </div>
+
+  <!-- Footer msg -->
+  <div class="footer-msg">
+    Conduzido por <strong>Joel Rodrigues Ruivo</strong> ·
+    CNA Idiomas · Midia · Cadastra · 2026
+  </div>
+
+</div>
+
+<script>
+// ── STARS ──────────────────────────────────
+(function(){
+  const svg = document.getElementById('starsBg');
+  const count = 200;
+  for(let i=0;i<count;i++){
+    const star = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    const x    = Math.random()*100;
+    const y    = Math.random()*100;
+    const r    = Math.random()*1.8+.2;
+    const dur  = 1.5+Math.random()*3;
+    const del  = Math.random()*4;
+    star.setAttribute('cx', x+'%');
+    star.setAttribute('cy', y+'%');
+    star.setAttribute('r',  r);
+    star.setAttribute('fill', Math.random()>.7 ? '#F5C842' : '#FFFFFF');
+    star.setAttribute('opacity', (.2+Math.random()*.8).toFixed(2));
+    star.style.animation =
+      `twinkle ${dur}s ease-in-out ${del}s infinite alternate`;
+    svg.appendChild(star);
+  }
+})();
+
+// ── FLOATING EMOJIS ───────────────────────
+(function(){
+  const wrap   = document.getElementById('floatingEmojis');
+  const emojis = ['⭐','✨','🌟','💫','👼','😇','🎓','🏆','📚','⚡'];
+  for(let i=0;i<15;i++){
+    const el       = document.createElement('div');
+    el.className   = 'floating-emoji';
+    el.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+    const size     = 14+Math.random()*20;
+    const left     = Math.random()*100;
+    const dur      = 8+Math.random()*16;
+    const del      = Math.random()*10;
+    el.style.cssText = `
+      font-size:${size}px;
+      left:${left}%;
+      bottom:-60px;
+      animation-duration:${dur}s;
+      animation-delay:${del}s;`;
+    wrap.appendChild(el);
+  }
+})();
+
+// ── COUNTDOWN — tempo desde o inicio ─────
+(function(){
+  const inicio = new Date('2026-04-06T09:00:00');
+  function update(){
+    const agora    = new Date();
+    let   diff     = Math.max(0, agora - inicio);
+    const h  = Math.floor(diff/3600000);
+    diff    -= h*3600000;
+    const m  = Math.floor(diff/60000);
+    diff    -= m*60000;
+    const s  = Math.floor(diff/1000);
+    const pad = n => String(n).padStart(2,'0');
+    document.getElementById('cd-h').textContent = pad(h);
+    document.getElementById('cd-m').textContent = pad(m);
+    document.getElementById('cd-s').textContent = pad(s);
+  }
+  update();
+  setInterval(update,1000);
+})();
+
+// ── INJECT CSS ANIMATION ──────────────────
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes twinkle{
+    from{opacity:.1;transform:scale(.6);}
+    to{opacity:1;transform:scale(1.3);}
+  }`;
+document.head.appendChild(style);
+</script>
+</body>
+</html>
